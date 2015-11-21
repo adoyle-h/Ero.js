@@ -1,0 +1,42 @@
+!.gitkeep
+node_modules
+test/config/local.js
+
+### Logs
+logs/
+*.log
+
+### Runtime data
+pids
+*.pid
+*.seed
+
+
+### Vim ignores
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+### OSX ignores
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+.apdisk

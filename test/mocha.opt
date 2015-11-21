@@ -1,0 +1,11 @@
+--require should
+--reporter spec
+--ui bdd
+--timeout 10000
+--slow 1000
+--bail false
+--colors true
+--recursive true
+--check-leaks
+--growl
+--invert false
