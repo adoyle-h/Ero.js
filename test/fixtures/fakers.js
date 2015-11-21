@@ -7,14 +7,16 @@ var config = require('../config');
 exports.errorTemplates = [{ // normal
     code: '',
     status: '',
+    captureErrorStack: '是否捕捉错误堆栈',
 }, {  // my style
-    code: '',
-    message: '',
-    businessMessage: '',
-    statusCode: '',
-    log: '',
-    warn: '',
-    captureErrorStack: '',
+    name: '错误的名字',
+    code: '响应体中的服务器的错误码',
+    message: '用于服务端打印的默认 message（如果 new Error 的时候未填 message）',
+    businessMessage: '用于客户端显示的错误消息，内容根据业务需求书写，由产品制定',
+    statusCode: 'HTTP 响应头中的状态码',
+    log: '是否用 logger.error 打印错误',
+    warn: '是否用 logger.warn 打印错误',
+    captureErrorStack: '是否捕捉错误堆栈',
 }, {  // base on the appendix of https://www.joyent.com/developers/node/design/errors
     localHostname: 'the local DNS hostname (e.g., that you\'re accepting connections at)',
     localIp: 'the local IP address (e.g., that you\'re accepting connections at)',
