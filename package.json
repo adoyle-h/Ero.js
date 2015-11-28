@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test"
   },
   "author": "ADoyle",
   "license": "ISC",
@@ -14,8 +14,11 @@
   },
   "devDependencies": {
     "async": "^1.5.0",
+    "chai": "^3.4.1",
     "config": "^1.17.1",
     "ioredis": "^1.9.0",
-    "should": "^7.1.0"
+    "mocha": "^2.3.4",
+    "should": "^7.1.1",
+    "walkdir": "0.0.11"
   }
 }
