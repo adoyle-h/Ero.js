@@ -101,4 +101,46 @@ describe('#base_error', function() {
         err.message.should.equal('hello! this a BaseError && ' + _message);
         err.stack.should.be.a.String();
     });
+
+    it('new BaseError(undefined, message) should equal new BaseError(message)', function() {
+        var error;
+        var message = 'this a BaseError';
+        var err = new BaseError(error, message);
+        err.name.should.equal('BaseError');
+        err.meta.should.deepEqual({});
+        err.message.should.equal(message);
+        err.stack.should.be.a.String();
+    });
+
+    it('new BaseError(null, message) should equal new BaseError(message)', function() {
+        var error = null;
+        var message = 'this a BaseError';
+        var err = new BaseError(error, message);
+        err.name.should.equal('BaseError');
+        err.meta.should.deepEqual({});
+        err.message.should.equal(message);
+        err.stack.should.be.a.String();
+    });
+
+    it('new BaseError(undefined, undefined, message) should equal new BaseError(message)', function() {
+        var error;
+        var meta;
+        var message = 'this a BaseError';
+        var err = new BaseError(error, meta, message);
+        err.name.should.equal('BaseError');
+        err.meta.should.deepEqual({});
+        err.message.should.equal(message);
+        err.stack.should.be.a.String();
+    });
+
+    it('new BaseError(0, undefined, message) should equal new BaseError(message)', function() {
+        var error = 0;
+        var meta;
+        var message = 'this a BaseError';
+        var err = new BaseError(error, meta, message);
+        err.name.should.equal('BaseError');
+        err.meta.should.deepEqual({});
+        err.message.should.equal(message);
+        err.stack.should.be.a.String();
+    });
 });
