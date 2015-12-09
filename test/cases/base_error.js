@@ -5,17 +5,30 @@ describe('#base_error', function() {
     var async = require('async');
     var util = require('../../lib/util');
     var Errors = require('../../lib/error');
+    var BaseError = require('../../lib/base_error').BaseError;
     var Fakers = require('../fixtures/fakers');
     var errorTemplates = Fakers.errorTemplates;
     var keeper;
 
     before(function() {
+        var keys = util.keys(Fakers.definitions);
+        util.each(keys, function(key) {
+            delete Errors[key];
+        });
+        Errors.template = null;
+    });
+
+    before(function() {
+        Errors.init({
+            lazy: true,
+        });
+        Errors.setTemplate(errorTemplates);
         util.each(Fakers.definitions, Errors.defineError);
     });
 
     it('new BaseError(message)', function() {
         var message = 'this a BaseError';
-        var err = new Errors.BaseError(message);
+        var err = new BaseError(message);
         err.name.should.equal('BaseError');
         err.meta.should.be.an.Object();
         err.message.should.equal(message);
@@ -23,7 +36,7 @@ describe('#base_error', function() {
     });
 
     it('new BaseError(message, param1, param2...paramN)', function() {
-        var err = new Errors.BaseError('%s! this a %s', 'hello', 'BaseError');
+        var err = new BaseError('%s! this a %s', 'hello', 'BaseError');
         err.name.should.equal('BaseError');
         err.message.should.equal('hello! this a BaseError');
         err.stack.should.be.a.String();
@@ -32,7 +45,7 @@ describe('#base_error', function() {
     it('new BaseError(meta, message)', function() {
         var message = 'this a BaseError';
         var meta = {a: 1};
-        var err = new Errors.BaseError(meta, message);
+        var err = new BaseError(meta, message);
         err.name.should.equal('BaseError');
         err.meta.should.equal(meta);
         err.message.should.equal(message);
@@ -43,7 +56,7 @@ describe('#base_error', function() {
         var error = new Error();
         error.meta = {a: 1};
         var message = 'this a BaseError';
-        var err = new Errors.BaseError(error, message);
+        var err = new BaseError(error, message);
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual(error.meta);
         err.message.should.equal(message);
@@ -56,7 +69,7 @@ describe('#base_error', function() {
         error.meta = {a: 3, b: 2};
         var message = 'this a BaseError';
         var meta = {a: 1};
-        var err = new Errors.BaseError(error, meta, message);
+        var err = new BaseError(error, meta, message);
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
@@ -69,7 +82,7 @@ describe('#base_error', function() {
         error.meta = {a: 3, b: 2};
         var message = 'this a BaseError';
         var meta = {a: 1};
-        var err = new Errors.BaseError(meta, error, message);
+        var err = new BaseError(meta, error, message);
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
@@ -82,7 +95,7 @@ describe('#base_error', function() {
         error.meta = {a: 3, b: 2};
         var message = 'this a BaseError';
         var meta = {a: 1};
-        var err = new Errors.BaseError(meta, error, '%s! this a %s', 'hello', 'BaseError');
+        var err = new BaseError(meta, error, '%s! this a %s', 'hello', 'BaseError');
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal('hello! this a BaseError && ' + _message);
