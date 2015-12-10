@@ -5,22 +5,32 @@ var util = require('../../lib/util');
 var config = require('../config');
 
 exports.errorTemplates = [{ // normal
-    code: '',
-    status: '',
+    code: '错误码',
     captureErrorStack: '是否捕捉错误堆栈',
 }, {  // my style
-    name: '错误的名字',
     code: '响应体中的服务器的错误码',
     message: '用于服务端打印的默认 message（如果 new Error 的时候未填 message）',
     businessMessage: '用于客户端显示的错误消息，内容根据业务需求书写，由产品制定',
     statusCode: {
         message: 'HTTP 响应头中的状态码',
-        required: Errors.OPTIONAL,
+        required: false,
         default: 200,
     },
-    log: '是否用 logger.error 打印错误',
-    warn: '是否用 logger.warn 打印错误',
-    captureErrorStack: '是否捕捉错误堆栈',
+    log: {
+        message: '是否打印错误',
+        required: false,
+        default: true,
+    },
+    warn: {
+        message: '是否用 logger.warn 打印错误',
+        required: false,
+        default: false,
+    },
+    captureErrorStack: {
+        message: '是否捕捉错误堆栈',
+        required: false,
+        default: true,
+    },
 }, {  // base on the appendix of https://www.joyent.com/developers/node/design/errors
     localHostname: 'the local DNS hostname (e.g., that you\'re accepting connections at)',
     localIp: 'the local IP address (e.g., that you\'re accepting connections at)',
@@ -39,20 +49,23 @@ exports.errorTemplates = [{ // normal
     errno: 'the symbolic value of errno (e.g., "ENOENT"). Do not use this for errors that don\'t actually set the C value of errno.Use "name" to distinguish between types of errors.',
 }];
 
-/**
- * 在这自定义错误类型
- *
- * 具体参数见 addErrorPrototypes 的 schema
- *
- * **若没有跟产品确认过 businessMessage，不要新增错误类型**
- */
-exports.definitions = {
+exports.normalDefinitions = {
+    Error: {
+        code: '001',
+        captureErrorStack: true,
+    },
+    RejectError: {
+        code: '002',
+        captureErrorStack: false,
+    },
+};
+
+exports.myDefinitions = {
     /**
      * 当其他类型的 Error 不符合你的需求，且需要在服务端打印错误信息和堆栈，请使用这个 Error
      * 用于代替 node 原生的 Error
      */
     Error: {
-        name: 'Error',
         code: 'G000',
         message: '服务器发生了可预判的错误',
         businessMessage: '服务器发了会呆',
@@ -78,5 +91,32 @@ exports.definitions = {
         message: 'URL 未找到',
         businessMessage: '媒人走丢了会儿',
         statusCode: 404,
+    },
+};
+
+exports.joyentDefinitions = {
+    Error: {
+        errno: '001',
+    },
+    RejectError: {
+        code: '002',
+        captureErrorStack: false,
+    },
+    AllError: {
+        localHostname: '',
+        localIp: '',
+        localPort: '',
+        remoteHostname: '',
+        remoteIp: '',
+        remotePort: '',
+        path: '',
+        srcpath: '',
+        dstpath: '',
+        hostname: '',
+        ip: '',
+        propertyName: '',
+        propertyValue: '',
+        syscall: '',
+        errno: '',
     },
 };

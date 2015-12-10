@@ -1,27 +1,20 @@
 'use strict';
 
-describe('#Errors', function () {
+describe('#Errors', function() {
     var should = require('should');
-    var async = require('async');
-    var util = require('../../lib/util');
     var Errors = require('../../lib/error');
     var Fakers = require('../fixtures/fakers');
-    var errorTemplates = Fakers.errorTemplates;
-    var keeper;
+    var Helper = require('../fixtures/helper');
 
-    before(function() {
-        var keys = util.keys(Fakers.definitions);
-        util.each(keys, function(key) {
-            delete Errors[key];
-        });
-        Errors.template = null;
+    beforeEach(function() {
+        Helper.reset(Errors);
     });
 
-    describe('init()', function () {
+    describe('init()', function() {
         it('with template and definitions', function() {
             Errors.init({
-                template: Fakers.errorTemplates,
-                definitions: Fakers.definitions,
+                template: Fakers.errorTemplates[0],
+                definitions: Fakers.normalDefinitions,
             });
         });
 
@@ -39,12 +32,30 @@ describe('#Errors', function () {
     });
 
     describe('setTemplate()', function() {
-        
+        beforeEach(function() {
+            Errors.init({
+                lazy: true,
+            });
+        });
+
+        it('', function() {
+            Errors.setTemplate(Fakers.errorTemplates[0]);
+            Errors.template.should.deepEqual({
+                code: {
+                    message: '错误码',
+                    required: true,
+                },
+                captureErrorStack: {
+                    message: '是否捕捉错误堆栈',
+                    required: true,
+                },
+            });
+        });
     });
 
     describe('defineError()', function() {
         it('should do what...', function() {
-            Errors.defineError
+            Errors.defineError;
         });
     });
 });

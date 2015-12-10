@@ -7,23 +7,21 @@ describe('#base_error', function() {
     var Errors = require('../../lib/error');
     var BaseError = require('../../lib/base_error').BaseError;
     var Fakers = require('../fixtures/fakers');
+    var Helper = require('../fixtures/helper');
+
     var errorTemplates = Fakers.errorTemplates;
     var keeper;
 
     before(function() {
-        var keys = util.keys(Fakers.definitions);
-        util.each(keys, function(key) {
-            delete Errors[key];
-        });
-        Errors.template = null;
+        Helper.reset(Errors);
     });
 
     before(function() {
         Errors.init({
             lazy: true,
         });
-        Errors.setTemplate(errorTemplates);
-        util.each(Fakers.definitions, Errors.defineError);
+        Errors.setTemplate(errorTemplates[1]);
+        util.each(Fakers.myDefinitions, Errors.defineError);
     });
 
     it('new BaseError(message)', function() {

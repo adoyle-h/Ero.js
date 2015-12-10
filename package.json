@@ -9,6 +9,7 @@
   "author": "ADoyle",
   "license": "ISC",
   "dependencies": {
+    "joi": "^6.10.1",
     "lodash": "^3.10.1",
     "sprintf-js": "^1.0.3"
   },
