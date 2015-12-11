@@ -38,7 +38,7 @@ describe('#Errors', function() {
             });
         });
 
-        it('', function() {
+        it('check Errors.template', function() {
             Errors.setTemplate(Fakers.errorTemplates[0]);
             Errors.template.should.deepEqual({
                 code: {
@@ -54,8 +54,39 @@ describe('#Errors', function() {
     });
 
     describe('defineError()', function() {
-        it('should do what...', function() {
-            Errors.defineError;
+        beforeEach(function() {
+            Errors.init({
+                lazy: true,
+            });
+        });
+
+        it('should throw error when defineError() before setting template', function() {
+            should.throws(function() {
+                Errors.defineError({
+                    code: '001',
+                    captureErrorStack: true,
+                }, 'Error');
+            }, 'The error template should be defined firstly!');
+        });
+
+        it('define Errors.Error and create an instance of it', function() {
+            Errors.setTemplate(Fakers.errorTemplates[0]);
+
+            var E = Errors.defineError({
+                code: '001',
+                captureErrorStack: true,
+            }, 'Error');
+
+            E.should.equal(Errors.Error);
+
+            Errors.Error.should.be.a.Function();
+
+            var e = new E('test');
+            e.should.be.an.Error();
+            e.code.should.equal('001');
+            e.captureErrorStack.should.equal(true);
+            e.message.should.equal('test');
+            e.stack.should.be.a.String();
         });
     });
 });

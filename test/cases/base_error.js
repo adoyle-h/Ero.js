@@ -10,7 +10,6 @@ describe('#base_error', function() {
     var Helper = require('../fixtures/helper');
 
     var errorTemplates = Fakers.errorTemplates;
-    var keeper;
 
     before(function() {
         Helper.reset(Errors);
