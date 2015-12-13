@@ -2,6 +2,7 @@
 
 describe('#Errors - basic', function() {
     var should = require('should');
+    var util = require('../../lib/util');
     var Errors = require('../../lib/error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
@@ -15,6 +16,19 @@ describe('#Errors - basic', function() {
             Errors.init({
                 template: Fakers.errorTemplates[0],
                 definitions: Fakers.normalDefinitions,
+            });
+        });
+
+        it('should return a map of custom Errors', function() {
+            var _Errors = Errors.init({
+                template: Fakers.errorTemplates[0],
+                definitions: Fakers.normalDefinitions,
+            });
+
+            _Errors.should.have.keys(util.keys(Fakers.normalDefinitions));
+
+            util.each(_Errors, function(_Error) {
+                _Error.should.be.a.Function();
             });
         });
 
