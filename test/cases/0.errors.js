@@ -21,13 +21,25 @@ describe('#Errors - basic', function() {
         it('should throw error when init() without any params', function() {
             should.throws(function() {
                 Errors.init();
-            }, 'template should be an Object!');
+            }, function(err) {
+                err.message.should.equal('Cannot read property \'template\' of undefined');
+                return true;
+            });
         });
     });
 
     describe('setTemplate()', function() {
         afterEach(function() {
             Helper.reset(Errors);
+        });
+
+        it('should throw error when template is not an object', function() {
+            should.throws(function() {
+                Errors.setTemplate();
+            }, function(err) {
+                err.message.should.equal('template should be an object!');
+                return true;
+            });
         });
 
         it('check Errors.template', function() {
@@ -46,7 +58,7 @@ describe('#Errors - basic', function() {
     });
 
     describe('defineError()', function() {
-        after(function() {
+        afterEach(function() {
             Helper.reset(Errors);
         });
 
@@ -56,7 +68,32 @@ describe('#Errors - basic', function() {
                     code: '001',
                     captureErrorStack: true,
                 }, 'Error');
-            }, 'The error template should be defined firstly!');
+            }, function(err) {
+                err.message.should.equal('The error template should be defined firstly!');
+                return true;
+            });
+        });
+
+        it('should throw error when definition is not an object', function() {
+            Errors.setTemplate(Fakers.errorTemplates[0]);
+
+            should.throws(function() {
+                Errors.defineError(null, 'Error');
+            }, function(err) {
+                err.message.should.equal('definition should be an object! Current error name=Error');
+                return true;
+            });
+        });
+
+        it('should throw error when definition missing a required key', function() {
+            Errors.setTemplate(Fakers.errorTemplates[0]);
+
+            should.throws(function() {
+                Errors.defineError({}, 'Error');
+            }, function(err) {
+                err.message.should.equal('Missing the key "code", which is required. Current error name=Error');
+                return true;
+            });
         });
 
         it('define Errors.Error and create an instance of it', function() {
