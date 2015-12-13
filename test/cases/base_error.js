@@ -2,7 +2,6 @@
 
 describe('#base_error', function() {
     var should = require('should');
-    var async = require('async');
     var util = require('../../lib/util');
     var Errors = require('../../lib/error');
     var BaseError = require('../../lib/base_error').BaseError;
@@ -16,8 +15,10 @@ describe('#base_error', function() {
     });
 
     before(function() {
-        Errors.setTemplate(errorTemplates[1]);
-        util.each(Fakers.myDefinitions, Errors.defineError);
+        Errors.init({
+            template: errorTemplates[1],
+            definitions: Fakers.myDefinitions,
+        });
     });
 
     it('new BaseError(message)', function() {
@@ -87,9 +88,9 @@ describe('#base_error', function() {
         var _message = 'this a native error';
         var error = new Error(_message);
         error.meta = {a: 3, b: 2};
-        var message = 'this a BaseError';
+        var message = '%s! this a %s';
         var meta = {a: 1};
-        var err = new BaseError(meta, error, '%s! this a %s', 'hello', 'BaseError');
+        var err = new BaseError(meta, error, message, 'hello', 'BaseError');
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal('hello! this a BaseError && ' + _message);
