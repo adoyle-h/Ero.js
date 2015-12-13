@@ -18,12 +18,6 @@ describe('#Errors', function() {
             });
         });
 
-        it('without template and definitions', function() {
-            Errors.init({
-                lazy: true,
-            });
-        });
-
         it('should throw error when init() without any params', function() {
             should.throws(function() {
                 Errors.init();
@@ -32,12 +26,6 @@ describe('#Errors', function() {
     });
 
     describe('setTemplate()', function() {
-        beforeEach(function() {
-            Errors.init({
-                lazy: true,
-            });
-        });
-
         it('check Errors.template', function() {
             Errors.setTemplate(Fakers.errorTemplates[0]);
             Errors.template.should.deepEqual({
@@ -54,12 +42,6 @@ describe('#Errors', function() {
     });
 
     describe('defineError()', function() {
-        beforeEach(function() {
-            Errors.init({
-                lazy: true,
-            });
-        });
-
         it('should throw error when defineError() before setting template', function() {
             should.throws(function() {
                 Errors.defineError({

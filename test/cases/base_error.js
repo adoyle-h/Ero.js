@@ -16,9 +16,6 @@ describe('#base_error', function() {
     });
 
     before(function() {
-        Errors.init({
-            lazy: true,
-        });
         Errors.setTemplate(errorTemplates[1]);
         util.each(Fakers.myDefinitions, Errors.defineError);
     });
