@@ -19,6 +19,10 @@ describe('#base_error', function() {
         });
     });
 
+    function checkKeys(err) {
+        err.should.have.keys(['meta', 'message', 'stack']);
+    }
+
     it('new BaseError(message)', function() {
         var message = 'this a BaseError';
         var err = new BaseError(message);
@@ -26,6 +30,7 @@ describe('#base_error', function() {
         err.meta.should.be.an.Object();
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(message, param1, param2...paramN)', function() {
@@ -33,6 +38,7 @@ describe('#base_error', function() {
         err.name.should.equal('BaseError');
         err.message.should.equal('hello! this a BaseError');
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(meta, message)', function() {
@@ -43,6 +49,7 @@ describe('#base_error', function() {
         err.meta.should.equal(meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(error, message)', function() {
@@ -54,6 +61,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual(error.meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(error, meta, message)', function() {
@@ -67,6 +75,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(meta, error, message)', function() {
@@ -80,6 +89,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(meta, error, message, param1, param2...paramN)', function() {
@@ -93,6 +103,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal('hello! this a BaseError && ' + _message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(undefined, message) should equal new BaseError(message)', function() {
@@ -103,6 +114,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(null, message) should equal new BaseError(message)', function() {
@@ -113,6 +125,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(undefined, undefined, message) should equal new BaseError(message)', function() {
@@ -124,6 +137,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     it('new BaseError(0, undefined, message) should equal new BaseError(message)', function() {
@@ -135,12 +149,14 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        checkKeys(err);
     });
 
     describe('## test message', function() {
         it('no message', function() {
             var err = new BaseError();
             err.message.should.be.empty();
+            checkKeys(err);
         });
 
         it('only previous error message', function() {
@@ -148,6 +164,7 @@ describe('#base_error', function() {
             var e1 = new Error(message);
             var err = new BaseError(e1);
             err.message.should.be.equal(message);
+            checkKeys(err);
         });
 
         it('connect previous error message with " && "', function() {
@@ -156,6 +173,7 @@ describe('#base_error', function() {
             var message2 = 'world';
             var err = new BaseError(e1, message2);
             err.message.should.be.equal(message2 + ' && ' + message);
+            checkKeys(err);
         });
 
         it('connect previous error message with " && " while using string format', function() {
@@ -163,6 +181,7 @@ describe('#base_error', function() {
             var e1 = new Error(message);
             var err = new BaseError(e1, 'this is %s', 'world');
             err.message.should.be.equal('this is world && ' + message);
+            checkKeys(err);
         });
     });
 });
