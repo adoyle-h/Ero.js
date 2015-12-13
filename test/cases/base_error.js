@@ -1,8 +1,6 @@
 'use strict';
 
 describe('#base_error', function() {
-    var should = require('should');
-    var util = require('../../lib/util');
     var Errors = require('../../lib/error');
     var BaseError = require('../../lib/base_error').BaseError;
     var Fakers = require('../fixtures/fakers');
@@ -137,5 +135,34 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+    });
+
+    describe('## test message', function() {
+        it('no message', function() {
+            var err = new BaseError();
+            err.message.should.be.empty();
+        });
+
+        it('only previous error message', function() {
+            var message = 'hello';
+            var e1 = new Error(message);
+            var err = new BaseError(e1);
+            err.message.should.be.equal(message);
+        });
+
+        it('connect previous error message with " && "', function() {
+            var message = 'hello';
+            var e1 = new Error(message);
+            var message2 = 'world';
+            var err = new BaseError(e1, message2);
+            err.message.should.be.equal(message2 + ' && ' + message);
+        });
+
+        it('connect previous error message with " && " while using string format', function() {
+            var message = 'hello';
+            var e1 = new Error(message);
+            var err = new BaseError(e1, 'this is %s', 'world');
+            err.message.should.be.equal('this is world && ' + message);
+        });
     });
 });

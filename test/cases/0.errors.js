@@ -1,16 +1,16 @@
 'use strict';
 
-describe('#Errors', function() {
+describe('#Errors - basic', function() {
     var should = require('should');
     var Errors = require('../../lib/error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
 
-    beforeEach(function() {
-        Helper.reset(Errors);
-    });
-
     describe('init()', function() {
+        afterEach(function() {
+            Helper.reset(Errors);
+        });
+
         it('with template and definitions', function() {
             Errors.init({
                 template: Fakers.errorTemplates[0],
@@ -26,6 +26,10 @@ describe('#Errors', function() {
     });
 
     describe('setTemplate()', function() {
+        afterEach(function() {
+            Helper.reset(Errors);
+        });
+
         it('check Errors.template', function() {
             Errors.setTemplate(Fakers.errorTemplates[0]);
             Errors.template.should.deepEqual({
@@ -42,6 +46,10 @@ describe('#Errors', function() {
     });
 
     describe('defineError()', function() {
+        after(function() {
+            Helper.reset(Errors);
+        });
+
         it('should throw error when defineError() before setting template', function() {
             should.throws(function() {
                 Errors.defineError({
@@ -69,6 +77,81 @@ describe('#Errors', function() {
             e.captureErrorStack.should.equal(true);
             e.message.should.equal('test');
             e.stack.should.be.a.String();
+        });
+    });
+});
+
+describe('#Errors', function() {
+    var should = require('should');
+    var Errors = require('../../lib/error');
+    var Fakers = require('../fixtures/fakers');
+    var Helper = require('../fixtures/helper');
+
+    before(function() {
+        Errors.init({
+            template: Fakers.errorTemplates[0],
+            definitions: Fakers.normalDefinitions,
+        });
+    });
+
+    describe('isCustomError()', function() {
+        it('Errors.isCustomError(new Errors.Error()).should.be.true', function() {
+            var e = new Errors.Error();
+            Errors.isCustomError(e).should.be.true();
+        });
+
+        it('Errors.isCustomError(new Error()).should.be.false', function() {
+            var e = new Error();
+            Errors.isCustomError(e).should.be.false();
+        });
+    });
+
+    describe('addMeta()', function() {
+        it('add meta to native error', function() {
+            var e = new Error();
+            var meta = {a: 1};
+            Errors.addMeta(e, meta);
+
+            e.meta.should.deepEqual(meta);
+        });
+
+        it('add meta to custom error', function() {
+            var e = new Errors.Error();
+            var meta = {a: 1};
+            Errors.addMeta(e, meta);
+
+            e.meta.should.deepEqual(meta);
+        });
+    });
+
+    describe('setErrorStackSeparator()', function() {
+        afterEach(function() {
+            Errors.setErrorStackSeparator('\n==== Pre-Error-Stack ====\n');
+        });
+
+        it('change error stack separator', function() {
+            var separator = '\n==== !!! ====\n';
+            Errors.setErrorStackSeparator(separator);
+
+            var e1 = new Error();
+            var e2 = new Errors.Error(e1);
+
+            e2.stack.should.containEql(separator + 'Error');
+        });
+    });
+
+    describe('setMessageConnector()', function() {
+        afterEach(function() {
+            Errors.setMessageConnector(' && ');
+        });
+
+        it('change error message connector', function() {
+            Errors.setMessageConnector('||');
+
+            var e1 = new Error('hello');
+            var e2 = new Errors.Error(e1, 'world');
+
+            e2.message.should.equal('world||hello');
         });
     });
 });
