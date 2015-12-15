@@ -2,7 +2,7 @@
 
 describe('#Errors - basic', function() {
     var should = require('should');
-    var util = require('../../lib/util');
+    var util = require('lodash');
     var Errors = require('../../lib/error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
