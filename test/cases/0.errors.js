@@ -14,18 +14,18 @@ describe('#Errors - basic', function() {
 
         it('with template and definitions', function() {
             Errors.init({
-                template: Fakers.errorTemplates[0],
-                definitions: Fakers.normalDefinitions,
+                template: Fakers.errorTemplate,
+                definitions: Fakers.definitions,
             });
         });
 
         it('should return a map of custom Errors', function() {
             var _Errors = Errors.init({
-                template: Fakers.errorTemplates[0],
-                definitions: Fakers.normalDefinitions,
+                template: Fakers.errorTemplate,
+                definitions: Fakers.definitions,
             });
 
-            _Errors.should.have.keys(util.keys(Fakers.normalDefinitions));
+            _Errors.should.have.keys(util.keys(Fakers.definitions));
 
             util.each(_Errors, function(_Error) {
                 _Error.should.be.a.Function();
@@ -57,14 +57,24 @@ describe('#Errors - basic', function() {
         });
 
         it('check Errors.template', function() {
-            Errors.setTemplate(Fakers.errorTemplates[0]);
+            Errors.setTemplate(Fakers.errorTemplate);
             Errors.template.should.deepEqual({
                 code: {
-                    message: '错误码',
+                    message: 'The error code',
                     required: true,
                 },
                 captureErrorStack: {
-                    message: '是否捕捉错误堆栈',
+                    message: 'Whether capture error stack or not',
+                    required: false,
+                    default: true,
+                },
+                statusCode: {
+                    message: 'The status code of HTTP response',
+                    required: false,
+                    default: 500,
+                },
+                logLevel: {
+                    message: 'The level for your logging message',
                     required: true,
                 },
             });
@@ -89,7 +99,7 @@ describe('#Errors - basic', function() {
         });
 
         it('should throw error when definition is not an object', function() {
-            Errors.setTemplate(Fakers.errorTemplates[0]);
+            Errors.setTemplate(Fakers.errorTemplate);
 
             should.throws(function() {
                 Errors.defineError(null, 'Error');
@@ -100,7 +110,7 @@ describe('#Errors - basic', function() {
         });
 
         it('should throw error when definition missing a required key', function() {
-            Errors.setTemplate(Fakers.errorTemplates[0]);
+            Errors.setTemplate(Fakers.errorTemplate);
 
             should.throws(function() {
                 Errors.defineError({}, 'Error');
@@ -111,11 +121,12 @@ describe('#Errors - basic', function() {
         });
 
         it('define Errors.Error and create an instance of it', function() {
-            Errors.setTemplate(Fakers.errorTemplates[0]);
+            Errors.setTemplate(Fakers.errorTemplate);
 
             var E = Errors.defineError({
                 code: '001',
                 captureErrorStack: true,
+                logLevel: 'error',
             }, 'Error');
 
             E.should.equal(Errors.Error);
@@ -140,8 +151,8 @@ describe('#Errors', function() {
 
     before(function() {
         Errors.init({
-            template: Fakers.errorTemplates[0],
-            definitions: Fakers.normalDefinitions,
+            template: Fakers.errorTemplate,
+            definitions: Fakers.definitions,
         });
     });
 

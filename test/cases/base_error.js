@@ -6,16 +6,14 @@ describe('#base_error', function() {
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
 
-    var errorTemplates = Fakers.errorTemplates;
-
     before(function() {
         Helper.reset(Errors);
     });
 
     before(function() {
         Errors.init({
-            template: errorTemplates[1],
-            definitions: Fakers.myDefinitions,
+            template: Fakers.errorTemplate,
+            definitions: Fakers.definitions,
         });
     });
 
