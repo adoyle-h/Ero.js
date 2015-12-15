@@ -2,7 +2,7 @@
 
 describe('#base_error', function() {
     var Errors = require('../../lib/error');
-    var BaseError = require('../../lib/base_error').BaseError;
+    var BaseError = require('../../lib/base_error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
 
