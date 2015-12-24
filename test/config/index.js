@@ -1,7 +1,5 @@
 'use strict';
 
-process.env.NODE_CONFIG_DIR = __dirname;
-var config = require('config');
-delete process.env.NODE_CONFIG_DIR;
-
+var load = require('config-sp').load;
+var config = load(__dirname, ['default.js', 'local.js']);
 module.exports = config;
