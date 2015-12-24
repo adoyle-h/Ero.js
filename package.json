@@ -1,13 +1,13 @@
 {
-  "name": "errorlib",
+  "name": "ero",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node test"
   },
-  "author": "ADoyle",
-  "license": "ISC",
+  "author": "ADoyle <adoyle.h@gmail.com>",
+  "license": "Apache-2.0",
   "dependencies": {
     "joi": "^6.10.1",
     "lodash": "^3.10.1",
@@ -17,6 +17,14 @@
     "async": "^1.5.0",
     "chai": "^3.4.1",
     "config-sp": "^0.1.0",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
+    "gulp-bump": "^1.0.0",
+    "gulp-cached": "^1.1.0",
+    "gulp-conventional-changelog": "^0.7.0",
+    "gulp-eslint": "^1.1.1",
+    "gulp-filter": "^3.0.1",
+    "gulp-license": "^1.0.0",
     "ioredis": "^1.9.0",
     "mocha": "^2.3.4",
     "should": "^7.1.1",
