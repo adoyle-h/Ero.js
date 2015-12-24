@@ -1,6 +1,5 @@
 'use strict';
 
-var Path = require('path');
 var Mocha = require('mocha');
 var util = require('lodash');
 
@@ -9,10 +8,6 @@ var globals = require('./globals');
 var loadCases = require('./load_cases');
 
 var mocha;
-
-function resolve(path) {
-    return Path.resolve(globals.TEST_ROOT, path);
-}
 
 function configMocha(mocha) {
     mocha.globals(util.keys(globals));
@@ -42,7 +37,6 @@ function init() {
         global[key] = val;
     });
 
-    mocha.addFile(resolve('plugins'));
     loadCases(mocha);
 
     return mocha;
