@@ -60,7 +60,7 @@ exports.defineError = function(definition, name) {
             if (opts.required === true) {
                 throw new Error('Missing the key "' + key + '", which is required. Current error name=' + name);
             } else {
-                value = opts.default;
+                E.prototype[key] = opts.default;
             }
         }
     });

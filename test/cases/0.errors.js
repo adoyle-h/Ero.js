@@ -125,7 +125,6 @@ describe('#Errors - basic', function() {
 
             var E = Errors.defineError({
                 code: '001',
-                captureErrorStack: true,
                 logLevel: 'error',
             }, 'Error');
 
@@ -137,6 +136,7 @@ describe('#Errors - basic', function() {
             e.should.be.an.Error();
             e.code.should.equal('001');
             e.captureErrorStack.should.equal(true);
+            e.statusCode.should.equal(500);
             e.message.should.equal('test');
             e.stack.should.be.a.String();
         });
