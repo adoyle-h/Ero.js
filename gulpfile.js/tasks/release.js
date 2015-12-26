@@ -125,7 +125,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             .pipe(LL.bump(bumpOpts))
             .pipe(gulp.dest('./'))
             .on('end', function() {
-                var packageJSON = LL.packageJSON;
+                var packageJSON = LL.reload('packageJSON');
                 var tag = packageJSON.version;
 
                 var command = util.format('\
