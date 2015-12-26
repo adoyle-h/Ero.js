@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./lib/error');
+module.exports = require('./src/error');

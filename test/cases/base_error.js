@@ -1,8 +1,8 @@
 'use strict';
 
 describe('#base_error', function() {
-    var Errors = require('../../lib/error');
-    var BaseError = require('../../lib/base_error');
+    var Errors = require('../../src/error');
+    var BaseError = require('../../src/base_error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
 
