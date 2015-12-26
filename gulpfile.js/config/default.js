@@ -20,8 +20,8 @@ var config = {
             },
             license: {
                 src: [
-                    '**/*',
-                    '!node_modules/**', '!node_modules',
+                    'src/**/*', 'index.js', 'package.json', 'README.md',
+                    'LICENSE', 'NOTICE',
                     '!**/*._*', '!**/.DS_Store',
                 ],
                 srcOpts: {
