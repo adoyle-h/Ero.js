@@ -33,6 +33,16 @@ var LL = {
             this.set(property, params[property]);
         }
     },
+    reset: function(name) {
+        var internal = this.internals[name];
+        internal.requirement = null;
+        var path = require.resolve(internal.path);
+        delete require.cache[path];
+    },
+    reload: function(name) {
+        this.reset(name);
+        return this[name];
+    },
 };
 
 exports = module.exports = LL;

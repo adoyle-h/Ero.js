@@ -153,7 +153,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:tag', function(done) {
         var CP = LL.CP;
         var util = LL.nodeUtil;
-        var packageJSON = LL.packageJSON;
+        var packageJSON = LL.reload('packageJSON');
         var tag = packageJSON.version;
         var conf = config.get('tasks.release.git-tag');
         var commitHash = conf.get('dest');
