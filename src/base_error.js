@@ -26,8 +26,8 @@ function getBaseErrorStackFunc(error, stackObj) {
  * the properties of BaseError instance：
  *   - meta: Object. The metadata for error.
  *   - message: String. The error message.
- *   - [stack]: String. The error stack. It is existed when `captureErrorStack` is `true`.
- *   - captureErrorStack: Boolean. default to `true`;
+ *   - [stack]: String. The error stack. It is existed when `captureStackTrace` is `true`.
+ *   - captureStackTrace: Boolean. default to `true`;
  *
  * the `meta` is prior to `error.meta`, when their properties have same names.
  *
@@ -71,7 +71,7 @@ function BaseError() {
         }
     }
 
-    if (self.captureErrorStack) {
+    if (self.captureStackTrace) {
         Error.captureStackTrace(stackObj, self.constructor);
         Object.defineProperty(self, 'stack', {
             configurable: true,
@@ -107,7 +107,7 @@ function BaseError() {
 util.inherits(BaseError, Error);
 
 BaseError.prototype.name = 'BaseError';
-BaseError.prototype.captureErrorStack = true;
+BaseError.prototype.captureStackTrace = true;
 BaseError.prototype.ERROR_STACK_SEPARATOR = '\n==== Pre-Error-Stack ====\n';
 BaseError.prototype.MESSAGE_CONNECTOR = ' && ';
 

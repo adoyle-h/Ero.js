@@ -19,7 +19,7 @@ var Errors = require('ero');
 // define an error template
 var errorTemplate = {
     code: 'The error code',
-    captureErrorStack: {
+    captureStackTrace: {
         message: 'Whether capture error stack or not',
         required: false,
         default: true,
@@ -43,13 +43,13 @@ var definitions = {
     },
     RejectError: {
         code: '002',
-        captureErrorStack: false,
+        captureStackTrace: false,
         statusCode: 400,
         logLevel: false,
     },
     NotFoundError: {
         code: '003',
-        captureErrorStack: false,
+        captureStackTrace: false,
         statusCode: 404,
         logLevel: 'info',
     },
@@ -87,7 +87,7 @@ console.log('name: ', e.name);
 console.log('stack: ', e.stack);
 console.log('meta: ', e.meta);
 console.log('code: ', e.code);
-console.log('captureErrorStack: ', e.captureErrorStack);
+console.log('captureStackTrace: ', e.captureStackTrace);
 console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
 ```
