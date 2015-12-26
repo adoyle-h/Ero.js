@@ -74,7 +74,12 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         CP.exec(command, done);
     });
 
-    gulp.task('release:changelog', function(done) {
+    gulp.task('release:changelog:touch', function(done) {
+        var name = config.get('tasks.release.changelog.name');
+        LL.CP.exec('touch ' + name, done);
+    });
+
+    gulp.task('release:changelog', ['release:changelog:touch'], function(done) {
         var CP = LL.CP;
         var util = LL.nodeUtil;
         var changelog = LL.changelog;
