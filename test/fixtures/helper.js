@@ -1,6 +1,6 @@
 'use strict';
 
-var util = require('../../lib/util');
+var util = require('../../src/util');
 var Fakers = require('./fakers');
 
 exports.reset = function(Errors) {

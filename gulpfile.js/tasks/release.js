@@ -74,7 +74,12 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         CP.exec(command, done);
     });
 
-    gulp.task('release:changelog', function(done) {
+    gulp.task('release:changelog:touch', function(done) {
+        var name = config.get('tasks.release.changelog.name');
+        LL.CP.exec('touch ' + name, done);
+    });
+
+    gulp.task('release:changelog', ['release:changelog:touch'], function(done) {
         var CP = LL.CP;
         var util = LL.nodeUtil;
         var changelog = LL.changelog;
@@ -89,7 +94,12 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             }))
             .pipe(gulp.dest('./'))
             .on('end', function() {
-                var command = util.format('git add %s', name);
+                var packageJSON = LL.reload('packageJSON');
+                var tag = packageJSON.version;
+                var command = util.format('\
+                    git add %s && \
+                    git commit -m "update version to %s" --no-edit \
+                ', name, tag);
                 CP.exec(command, done);
             })
             .on('error', done);
@@ -105,7 +115,6 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:bump', function(done) {
         var Path = LL.Path;
         var CP = LL.CP;
-        var util = LL.nodeUtil;
 
         var bumpOpts = {
             key: 'version',
@@ -125,14 +134,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             .pipe(LL.bump(bumpOpts))
             .pipe(gulp.dest('./'))
             .on('end', function() {
-                var packageJSON = LL.packageJSON;
-                var tag = packageJSON.version;
-
-                var command = util.format('\
-                    git add package.json && \
-                    git commit -m "update version to %s" --no-edit \
-                ', tag);
-                CP.exec(command, done);
+                CP.exec('git add package.json', done);
             })
             .on('error', done);
     });
@@ -153,7 +155,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:tag', function(done) {
         var CP = LL.CP;
         var util = LL.nodeUtil;
-        var packageJSON = LL.packageJSON;
+        var packageJSON = LL.reload('packageJSON');
         var tag = packageJSON.version;
         var conf = config.get('tasks.release.git-tag');
         var commitHash = conf.get('dest');
@@ -177,8 +179,8 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             'lint',
             'test',
             'release:pre',
-            'release:changelog',
             'release:bump',
+            'release:changelog',
             'release:branch',
             'release:tag',
             'release:push',

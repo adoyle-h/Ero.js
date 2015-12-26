@@ -2,8 +2,8 @@
 
 describe('#Errors - basic', function() {
     var should = require('should');
-    var util = require('../../lib/util');
-    var Errors = require('../../lib/error');
+    var util = require('../../src/util');
+    var Errors = require('../../src/error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
 
@@ -144,7 +144,7 @@ describe('#Errors - basic', function() {
 });
 
 describe('#Errors', function() {
-    var Errors = require('../../lib/error');
+    var Errors = require('../../src/error');
     var Fakers = require('../fixtures/fakers');
 
     before(function() {
