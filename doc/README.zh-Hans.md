@@ -1,26 +1,22 @@
 # Ero.js
 
-An error library provides simple functions for building your own customized errors.
+一个提供了一些简单的函数的类库，用于构建你自己的自定义错误。
 
-## Document Translations
-
-[简体中文](./doc/README.zh-Hans.md)
-
-## Installation
+## 安装（Installation）
 
 `npm install --save ero`
 
-## Quick Start
+## 快速上手（Quick Start）
 
-It is highly recommended that you should wrap the `ero` library to extend your own error module.
+强烈推荐你二次封装 `ero` 库，以此来扩展出你自己的错误模块。
 
-Edit a file. e.g. `error.js`:
+编辑一个文件。比如 `error.js`：
 
 ```js
 // error.js
 var Errors = require('ero');
 
-// define an error template
+// 定义一个错误模板
 var errorTemplate = {
     code: 'The error code',
     captureStackTrace: {
@@ -39,7 +35,7 @@ var errorTemplate = {
     },
 };
 
-// define a set of error definitions
+// 创建一系列错误类的定义
 var definitions = {
     Error: {
         code: '001',
@@ -59,34 +55,34 @@ var definitions = {
     },
 };
 
-// initialize the ero library
+// 初始化 ero
 Errors.init({
     template: errorTemplate,
     definitions: definitions,
 });
 
-// export the Errors
+// 将 Errors 导出
 module.exports = Errors;
 ```
 
-In another file, require your error module:
+在另一个文件中，引用你的错误模块：
 
 ```js
 var Errors = require('./error');
 
-// use the defined errors
-// assume that there is a meta obejct
+// 使用你自定义的错误类
+// 假设有一个元数据(meta)
 var meta = {
     a: 1,
     b: [2, 3, 4],
     c: {}
 }
 
-// new an error instance with an additional meta object
-// and the message can be sprintf-like format string, which is implemented by [alexei/sprintf.js](https://github.com/alexei/sprintf.js)
+// 创建一个错误实例，并把元数据与这个实例绑定
+// 错误信息可以使用 sprintf 类似的语法，实际上它是通过 [alexei/sprintf.js](https://github.com/alexei/sprintf.js) 实现的
 var e = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
 
-// see the properties of error instance
+// 你可以得到错误实例的一些属性
 console.log('message: ', e.message);
 console.log('name: ', e.name);
 console.log('stack: ', e.stack);
@@ -97,27 +93,25 @@ console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
 ```
 
-## Error Template
+## 错误模板（Error Template）
 
-The error template is used to constrain the properties of the error definition.
+错误模板用于约束错误定义中的属性。  
+如果错误定义中缺少某个模板中设定为必选的属性，则在 `ero` 初始化的时候就会报错，以提醒开发者。  
+同时，模板也可以为所有错误定义的属性设定默认值，方便简化代码。
 
-If a property is absent in error definition while it is required by template, it will throw an error when initialize the `ero` library.  
-Furthermore, the template can also set default values for the properties of all error definitions, in order to simplify codes.
+错误模板中的 `message`，是为了强制让开发者解释每个错误属性的含义，别无它用。
 
-The `message` property of template do nothing besides force the developer to explain the meaning of each property of error definition.
+## 错误定义（Error Definitions）
 
-## Error Definitions
+每一个错误定义(Error Definition)用于创建对应的错误类（Error Class）。
 
-Each error definition is used to create the corresponding error class.
+每一个错误定义是由 `<错误名称>: <属性定义>` 组成的。错误名称必须唯一。
 
-Each error definition is defined by `<error name>: <properties definitions>`, which `<error name>` should be unique.
-
-`Properties definitions` is an object composed of many key/value pairs.
-It will be assigned to the prototype of corresponding error class, as the default value for each error instance.
+属性定义是一个由许多键值对组成的对象（Object），它将被赋值到对应错误类的原型链上，作为每个错误实例的默认值。
 
 ## API
 
-## Copyright and License
+## 版权声明（Copyright and License）
 
 Copyright 2015 ADoyle
 
