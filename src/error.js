@@ -7,6 +7,10 @@ var BaseError = require('./base_error');
 var v = require('./validator').v;
 var check = require('./validator').check;
 
+/**
+ * @class Errors
+ * @singleton
+ */
 var Errors = {
     template: null,
 };
@@ -18,7 +22,8 @@ exports = module.exports = Errors;
  * Default to "\n==== Pre-Error-Stack ====\n"
  *
  * @param  {String} separator
- * @method setErrorStackSeparator(separator)
+ * @return {undefined}
+ * @method setErrorStackSeparator
  */
 exports.setErrorStackSeparator = function(separator) {
     BaseError.prototype.ERROR_STACK_SEPARATOR = separator;
@@ -28,8 +33,8 @@ exports.setErrorStackSeparator = function(separator) {
  * set the connector for multi error messages. Default to " && "
  *
  * @param  {String} connector
- * @return {Undefined}
- * @method setMessageConnector(connector)
+ * @return {undefined}
+ * @method setMessageConnector
  */
 exports.setMessageConnector = function(connector) {
     BaseError.prototype.MESSAGE_CONNECTOR = connector;
@@ -41,7 +46,7 @@ exports.setMessageConnector = function(connector) {
  * @param  {Object} definition
  * @param  {String} name  the name of Error Class
  * @return {Function}  Error Class
- * @method defineError(definition, name)
+ * @method defineError
  */
 exports.defineError = function(definition, name) {
     if (!Errors.template) throw new Error('The error template should be defined firstly!');
@@ -79,20 +84,21 @@ exports.defineError = function(definition, name) {
  *
  * @param  {*}  error
  * @return {Boolean}
- * @method isCustomError(err)
+ * @method isCustomError
  */
 exports.isCustomError = function(err) {
     return err instanceof BaseError;
 };
 /**
- * alias for isCustomError
+ * @alias #isCustomError
+ * @method isError
  */
 exports.isError = Errors.isCustomError;
 
 /**
  * @param  {Object} template
- * @return {Undefined}
- * @method setTemplate(template)
+ * @return {undefined}
+ * @method setTemplate
  */
 exports.setTemplate = function(template) {
     if (util.isObject(template) === false) {
@@ -127,7 +133,7 @@ exports.setTemplate = function(template) {
  * @side_effect  err, err.meta
  * @param  {Error}  err  the instance of Error class or Error subclass
  * @param  {Object} meta
- * @return {Undefined}
+ * @return {undefined}
  * @method addMeta
  */
 exports.addMeta = function(err, meta) {
@@ -140,9 +146,9 @@ exports.addMeta = function(err, meta) {
  *
  * @param  {Object} params
  * @param  {Object} params.template  a template for all error sub-classes
- * @param  {Array<Object>} params.definitions the definitions of error sub-classes
+ * @param  {Object[]} params.definitions the definitions of error sub-classes
  * @return {Object}  a map of Error classes
- * @method init(params)
+ * @method init
  */
 exports.init = function(params) {
     Errors.setTemplate(params.template);
