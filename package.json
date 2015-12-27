@@ -11,7 +11,7 @@
     "test": "node test"
   },
   "engines": {
-    "node": "^0.12.0"
+    "node": ">=0.11.0"
   },
   "author": "ADoyle <adoyle.h@gmail.com>",
   "license": "Apache-2.0",
