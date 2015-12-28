@@ -8,7 +8,6 @@ module.exports = {
     CP: 'child_process',
 
     // third-party libraries
-    async: 'async',
     del: 'del',
     runSequence: 'run-sequence',
 
