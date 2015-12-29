@@ -2,4 +2,7 @@
     env: {
         mocha: true,
     },
+    "globals": {
+        "TEST_ROOT": false,
+    },
 }
