@@ -111,9 +111,17 @@ console.log('logLevel: ', e.logLevel);
 
 ## API
 
+## 版本（Versioning）
+
+版本迭代遵循 SemVer 2.0.0 的规则。
+
+*但是*，当主版本号是零（0.y.z），一切*随时*都可能有*不兼容的修改*。这处于开发初始阶段，其公共 API 是不稳定的。
+
+关于 SemVer 的更多信息，请访问 http://semver.org/。
+
 ## 版权声明（Copyright and License）
 
-Copyright 2015 ADoyle
+Copyright 2015-2016 ADoyle
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
