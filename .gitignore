@@ -2,6 +2,8 @@
 !.gitkeep
 release/
 node_modules/
+gh-pages/
+doc/API/
 
 gulpfile.js/config/**
 !gulpfile.js/config/index.js

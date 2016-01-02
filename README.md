@@ -117,6 +117,7 @@ It will be assigned to the prototype of corresponding error class, as the defaul
 
 ## API
 
+see http://adoyle.me/Ero.js/
 
 ## Versioning
 

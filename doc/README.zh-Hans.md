@@ -111,6 +111,8 @@ console.log('logLevel: ', e.logLevel);
 
 ## API
 
+请看 http://adoyle.me/Ero.js/
+
 ## 版本（Versioning）
 
 版本迭代遵循 SemVer 2.0.0 的规则。
