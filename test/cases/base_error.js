@@ -5,6 +5,7 @@ describe('#base_error', function() {
     var BaseError = require('../../src/base_error');
     var Fakers = require('../fixtures/fakers');
     var Helper = require('../fixtures/helper');
+    var should = require('should');
 
     before(function() {
         Helper.reset(Errors);
@@ -28,6 +29,7 @@ describe('#base_error', function() {
         err.meta.should.be.an.Object();
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -36,6 +38,7 @@ describe('#base_error', function() {
         err.name.should.equal('BaseError');
         err.message.should.equal('hello! this a BaseError');
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -47,6 +50,7 @@ describe('#base_error', function() {
         err.meta.should.equal(meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -59,6 +63,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual(error.meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -73,6 +78,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -87,6 +93,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -101,6 +108,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal('hello! this a BaseError && ' + _message);
         err.stack.should.be.a.String();
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -112,6 +120,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -123,6 +132,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -135,6 +145,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -147,6 +158,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
+        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -180,6 +192,18 @@ describe('#base_error', function() {
             var err = new BaseError(e1, 'this is %s', 'world');
             err.message.should.be.equal('this is world && ' + message);
             checkKeys(err);
+        });
+
+        it('chain three errors', function() {
+            var firstErr = new Error('the first error');
+            var secondMeta = {a: 1, b: 3};
+            var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
+            var thirdMeta = {b: '2', c: [3], d: true};
+            var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+            thirdErr.message.should.equal('something is wrong && the second error && the first error');
+            thirdErr.meta.should.deepEqual({a: 1, b: '2', c: [3], d: true});
+            thirdErr.stack.should.be.a.String();
+            thirdErr.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(2);
         });
     });
 });

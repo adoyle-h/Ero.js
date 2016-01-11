@@ -85,7 +85,7 @@ function BaseError() {
     var arg;
     while (preArgs.length !== 0) {
         arg = preArgs.pop();
-        if (util.isError(arg)) {
+        if (arg instanceof Error) {
             error = arg;
         } else if (util.isObject(arg)) {
             meta = arg;
