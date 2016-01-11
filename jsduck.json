@@ -3,6 +3,7 @@
     "--footer": "Copyright 2015-2016 ADoyle. Licensed under the Apache License, Version 2.0.",
     "--no-source": true,
     "--": [
+        "src/base_error.js",
         "src/error.js"
     ],
     "--output": "./doc/API"
