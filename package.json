@@ -1,6 +1,6 @@
 {
   "name": "ero",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "An error library provides simple functions for building your own customized errors.",
   "main": "index.js",
   "keywords": [
