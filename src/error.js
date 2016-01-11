@@ -14,7 +14,15 @@ var check = require('./validator').check;
  * @singleton
  */
 var Errors = {
+    /**
+     * The parsed error template.
+     * @property {Object}
+     */
     template: null,
+    /**
+     * The BaseError class
+     * @property {BaseError}
+     */
     BaseError: BaseError,
 };
 exports = module.exports = Errors;
