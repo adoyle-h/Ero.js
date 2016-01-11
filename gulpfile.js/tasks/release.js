@@ -7,6 +7,18 @@
  * @param  {Object}  args    The parsed arguments from comment line
  */
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
+    gulp.task('release:doc', ['doc:api', 'clean:gh-pages'], function(done) {
+        var command = '\
+            cp -rp doc/api/ gh-pages && \
+            cd gh-pages && \
+            git add . && \
+            git commit -m "update docs" && \
+            git push && \
+            cd - \
+        ';
+        LL.CP.exec(command, done);
+    });
+
     gulp.task('release:license', ['clean:release'], function() {
         var conf = config.get('tasks.release.license');
         var license = LL.license;
