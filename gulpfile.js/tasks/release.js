@@ -12,10 +12,19 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             cp -rp doc/api/ gh-pages && \
             cd gh-pages && \
             git add . && \
-            git commit -m "update docs" && \
-            git push && \
-            cd - \
         ';
+        if (args.a || args.amend) {
+            command += '\
+                git commit --amend --no-edit && \
+                git push -f && \
+            ';
+        } else {
+            command += '\
+                git commit -m "update docs" && \
+                git push && \
+            ';
+        }
+        command += 'cd -';
         LL.CP.exec(command, done);
     });
 
