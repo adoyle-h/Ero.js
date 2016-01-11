@@ -1,6 +1,6 @@
 {
   "name": "ero",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "An error library provides simple functions for building your own customized errors.",
   "main": "index.js",
   "keywords": [
@@ -11,7 +11,7 @@
     "test": "node test"
   },
   "engines": {
-    "node": "^0.12.0"
+    "node": ">=0.11.0"
   },
   "author": "ADoyle <adoyle.h@gmail.com>",
   "license": "Apache-2.0",
@@ -29,18 +29,18 @@
     "sprintf-js": "^1.0.3"
   },
   "devDependencies": {
-    "async": "^1.5.0",
-    "chai": "^3.4.1",
-    "config-sp": "^0.1.0",
+    "config-sp": "^0.1.1",
+    "cz-conventional-changelog": "^1.1.5",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^2.1.1",
+    "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
     "gulp-conventional-changelog": "^0.7.0",
     "gulp-eslint": "^1.1.1",
     "gulp-filter": "^3.0.1",
     "gulp-license": "^1.0.0",
-    "ioredis": "^1.9.0",
+    "minimist": "^1.2.0",
     "mocha": "^2.3.4",
     "should": "^7.1.1",
     "walkdir": "0.0.11"

@@ -63,7 +63,7 @@ describe('#Errors - basic', function() {
                     message: 'The error code',
                     required: true,
                 },
-                captureErrorStack: {
+                captureStackTrace: {
                     message: 'Whether capture error stack or not',
                     required: false,
                     default: true,
@@ -90,7 +90,7 @@ describe('#Errors - basic', function() {
             should.throws(function() {
                 Errors.defineError({
                     code: '001',
-                    captureErrorStack: true,
+                    captureStackTrace: true,
                 }, 'Error');
             }, function(err) {
                 err.message.should.equal('The error template should be defined firstly!');
@@ -125,7 +125,6 @@ describe('#Errors - basic', function() {
 
             var E = Errors.defineError({
                 code: '001',
-                captureErrorStack: true,
                 logLevel: 'error',
             }, 'Error');
 
@@ -136,7 +135,8 @@ describe('#Errors - basic', function() {
             var e = new E('test');
             e.should.be.an.Error();
             e.code.should.equal('001');
-            e.captureErrorStack.should.equal(true);
+            e.captureStackTrace.should.equal(true);
+            e.statusCode.should.equal(500);
             e.message.should.equal('test');
             e.stack.should.be.a.String();
         });

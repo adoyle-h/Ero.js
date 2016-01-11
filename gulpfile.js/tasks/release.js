@@ -7,6 +7,27 @@
  * @param  {Object}  args    The parsed arguments from comment line
  */
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
+    gulp.task('release:doc', ['doc:api', 'clean:gh-pages'], function(done) {
+        var command = '\
+            cp -rp doc/api/ gh-pages && \
+            cd gh-pages && \
+            git add . && \
+        ';
+        if (args.a || args.amend) {
+            command += '\
+                git commit --amend --no-edit && \
+                git push -f && \
+            ';
+        } else {
+            command += '\
+                git commit -m "update docs" && \
+                git push && \
+            ';
+        }
+        command += 'cd -';
+        LL.CP.exec(command, done);
+    });
+
     gulp.task('release:license', ['clean:release'], function() {
         var conf = config.get('tasks.release.license');
         var license = LL.license;
@@ -15,6 +36,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var matches = conf.get('matches');
         var author = conf.get('author');
         var defaultLicense = conf.get('license');
+        var year = conf.get('year');
 
         var stream = gulp.src(conf.get('src'), conf.get('srcOpts'));
 
@@ -22,6 +44,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
             var f = filter(matchObj.glob, {restore: true});
             stream = stream.pipe(f)
                 .pipe(license(matchObj.license || defaultLicense, {
+                    year: matchObj.year || year,
                     organization: matchObj.author || author,
                 }))
                 .pipe(f.restore);
@@ -65,11 +88,22 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:pre', function(done) {
         var CP = LL.CP;
 
+        var rebaseDest;
+        var commit = args.c || args.commit;
+        var branch = args.branch;
+        if (commit) {
+            rebaseDest = commit;
+        } else if (branch) {
+            rebaseDest = branch;
+        } else {
+            rebaseDest = 'HEAD';
+        }
+
         var command = '\
             git add . && \
             git stash save "stash for release" && \
             git fetch --prune && \
-            git rebase origin/develop release \
+            git rebase ' + rebaseDest + ' release \
         ';
         CP.exec(command, done);
     });
@@ -109,6 +143,8 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
      * gulp release:bump [options]
      *
      * options:
+     *     -b --break  increase major version
+     *     -f --feature  increase minor version
      *     -t --type [major, minor, patch]  Semver 2.0. default to patch
      *     -v --version VERSION  Bump to a specific version
      */
@@ -122,11 +158,18 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         };
 
         var version = args.v || args.version;
-        var type = args.t || args.type || 'patch';
 
         if (version) {
             bumpOpts.version = version;
         } else {
+            var type;
+            if (args.b || args.break) {
+                type = 'major';
+            } else if (args.f || args.feature) {
+                type = 'minor';
+            } else {
+                type = args.t || args.type || 'patch';
+            }
             bumpOpts.type = type;
         }
 
@@ -169,6 +212,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var command = '\
             git push origin develop && \
             git push origin master && \
+            git push origin release && \
             git push --tags \
         ';
         CP.exec(command, done);

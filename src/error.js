@@ -7,41 +7,57 @@ var BaseError = require('./base_error');
 var v = require('./validator').v;
 var check = require('./validator').check;
 
+/**
+ * This is a module which exports some APIs, the BaseError class, and your defined Error classes.
+ *
+ * @class Errors
+ * @singleton
+ */
 var Errors = {
+    /**
+     * The parsed error template.
+     * @property {Object}
+     */
     template: null,
+    /**
+     * The BaseError class
+     * @property {BaseError}
+     */
+    BaseError: BaseError,
 };
 exports = module.exports = Errors;
 
 /**
- * set the separator for multi error stacks.
+ * Set the separator for multi error stacks.
  *
  * Default to "\n==== Pre-Error-Stack ====\n"
  *
+ * @method setErrorStackSeparator
  * @param  {String} separator
- * @method setErrorStackSeparator(separator)
+ * @return {undefined}
  */
 exports.setErrorStackSeparator = function(separator) {
     BaseError.prototype.ERROR_STACK_SEPARATOR = separator;
 };
 
 /**
- * set the connector for multi error messages. Default to " && "
+ * Set the connector for multi error messages. Default to " && "
  *
+ * @method setMessageConnector
  * @param  {String} connector
- * @return {Undefined}
- * @method setMessageConnector(connector)
+ * @return {undefined}
  */
 exports.setMessageConnector = function(connector) {
     BaseError.prototype.MESSAGE_CONNECTOR = connector;
 };
 
 /**
- * define a subclass of BaseError
+ * Define a subclass of BaseError
  *
+ * @method defineError
  * @param  {Object} definition
  * @param  {String} name  the name of Error Class
  * @return {Function}  Error Class
- * @method defineError(definition, name)
  */
 exports.defineError = function(definition, name) {
     if (!Errors.template) throw new Error('The error template should be defined firstly!');
@@ -60,7 +76,7 @@ exports.defineError = function(definition, name) {
             if (opts.required === true) {
                 throw new Error('Missing the key "' + key + '", which is required. Current error name=' + name);
             } else {
-                value = opts.default;
+                E.prototype[key] = opts.default;
             }
         }
     });
@@ -75,24 +91,25 @@ exports.defineError = function(definition, name) {
 /**
  * To determine whether it is your custom error.
  *
- * if the error is an instance of the native Error, return `false`.
+ * If the error is an instance of the native Error, return `false`.
  *
+ * @method isCustomError
  * @param  {*}  error
  * @return {Boolean}
- * @method isCustomError(err)
  */
 exports.isCustomError = function(err) {
     return err instanceof BaseError;
 };
 /**
- * alias for isCustomError
+ * @alias #isCustomError
+ * @method isError
  */
 exports.isError = Errors.isCustomError;
 
 /**
+ * @method setTemplate
  * @param  {Object} template
- * @return {Undefined}
- * @method setTemplate(template)
+ * @return {undefined}
  */
 exports.setTemplate = function(template) {
     if (util.isObject(template) === false) {
@@ -122,13 +139,13 @@ exports.setTemplate = function(template) {
  * and then the own enumerable properties of second parameter will be assigned to err.meta.
  * If the err.meta is not undefined, it should be a plain object.
  *
- * the properties of meta will overwrite the properties of err.meta, if they have same name.
+ * The properties of meta will overwrite the properties of err.meta, if they have same name.
  *
  * @side_effect  err, err.meta
+ * @method addMeta
  * @param  {Error}  err  the instance of Error class or Error subclass
  * @param  {Object} meta
- * @return {Undefined}
- * @method addMeta
+ * @return {undefined}
  */
 exports.addMeta = function(err, meta) {
     if (!err.meta) err.meta = {};
@@ -136,13 +153,13 @@ exports.addMeta = function(err, meta) {
 };
 
 /**
- * initialize module
+ * Initialize module. Set your error template and error definitions.
  *
+ * @method init
  * @param  {Object} params
  * @param  {Object} params.template  a template for all error sub-classes
- * @param  {Array<Object>} params.definitions the definitions of error sub-classes
+ * @param  {Object[]} params.definitions the definitions of error sub-classes
  * @return {Object}  a map of Error classes
- * @method init(params)
  */
 exports.init = function(params) {
     Errors.setTemplate(params.template);

@@ -2,7 +2,7 @@
 
 exports.errorTemplate = {
     code: 'The error code',
-    captureErrorStack: {
+    captureStackTrace: {
         message: 'Whether capture error stack or not',
         required: false,
         default: true,
@@ -25,13 +25,13 @@ exports.definitions = {
     },
     RejectError: {
         code: '002',
-        captureErrorStack: false,
+        captureStackTrace: false,
         statusCode: 400,
         logLevel: false,
     },
     NotFoundError: {
         code: '003',
-        captureErrorStack: false,
+        captureStackTrace: false,
         statusCode: 404,
         logLevel: 'info',
     },
