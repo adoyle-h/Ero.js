@@ -84,6 +84,7 @@ var meta = {
 
 // new an error instance with an additional meta object
 // and the message can be sprintf-like format string, which is implemented by [alexei/sprintf.js](https://github.com/alexei/sprintf.js)
+// please see http://adoyle.me/Ero.js/#!/api/BaseError for more information about the constructor parameters
 var e = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
 
 // see the properties of error instance
@@ -114,6 +115,46 @@ Each error definition is defined by `<error name>: <properties definitions>`, wh
 
 `Properties definitions` is an object composed of many key/value pairs.
 It will be assigned to the prototype of corresponding error class, as the default value for each error instance.
+
+## Error Class
+Each error definitions provided will be used to generate corresponding error classes, which are inherited from the [`BaseError`](http://adoyle.me/Ero.js/#!/api/BaseError) base class.
+
+`BaseError` has a full featured constructor that is convenient for adding more useful information to error instance when you create it.
+
+Assume that there is a `Errors.Error` class. Then you use it like that:
+
+```js
+// The message can be sprintf-like format string, which is implemented by [alexei/sprintf.js](https://github.com/alexei/sprintf.js)
+var err = new Errors.Error('%s is %s', 'something', 'wrong');
+```
+
+To add some meta data:
+
+```js
+var meta = {a: 1, b: '2', c: [3], d: true};
+var err = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
+console.log(err.meta);  // The meta will be added to err.meta
+```
+
+To be combined with an error
+
+```js
+var firstErr = new Error('the first error');
+var secondMeta = {a: 1, b: 3};
+var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
+var thirdMeta = {b: '2', c: [3], d: true};
+// The err and meta are order-uncorrelated. Just make sure they are appeared before message.
+var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // These three error messages will be together in a series.
+console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to err.meta. The last is prior to the old, when they have same name of key.
+console.log(thirdErr.stack);  // These three error stacks will be together in a series.
+```
+
+Certainly, error, meta, message can be optional:
+
+```js
+var err = new Errors.Error();
+```
 
 ## API
 

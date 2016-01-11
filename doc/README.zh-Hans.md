@@ -80,6 +80,7 @@ var meta = {
 
 // 创建一个错误实例，并把元数据与这个实例绑定
 // 错误信息可以使用 sprintf 类似的语法，实际上它是通过 [alexei/sprintf.js](https://github.com/alexei/sprintf.js) 实现的
+// 请看 http://adoyle.me/Ero.js/#!/api/BaseError 了解关于构造函数参数的更多信息
 var e = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
 
 // 你可以得到错误实例的一些属性
@@ -108,6 +109,46 @@ console.log('logLevel: ', e.logLevel);
 每一个错误定义是由 `<错误名称>: <属性定义>` 组成的。错误名称必须唯一。
 
 属性定义是一个由许多键值对组成的对象（Object），它将被赋值到对应错误类的原型链上，作为每个错误实例的默认值。
+
+## 错误类（Error Class）
+你提供的每个错误定义（Error Definitions），将会生成对应的错误类。错误类都是继承自 [`BaseError`](http://adoyle.me/Ero.js/#!/api/BaseError) 这个基类。
+
+`BaseError` 提供了功能丰富的构造函数，方便你在创建错误实例时，附加更多有用的信息。
+
+假设已生成 `Errors.Error` 这个子类，你可以这么使用它：
+
+```js
+// 错误信息可以使用 sprintf 类似的语法，实际上它是通过 [alexei/sprintf.js](https://github.com/alexei/sprintf.js) 实现的
+var err = new Errors.Error('%s is %s', 'something', 'wrong');
+```
+
+你可以添加一些元数据：
+
+```js
+var meta = {a: 1, b: '2', c: [3], d: true};
+var err = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
+console.log(err.meta);  // meta 将会存储在 err.meta 中
+```
+
+你可以结合上一个错误：
+
+```js
+var firstErr = new Error('the first error');
+var secondMeta = {a: 1, b: 3};
+var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
+var thirdMeta = {b: '2', c: [3], d: true};
+// err 和 meta 是顺序无关的，只要保证在 message 之前即可
+var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // 三个错误的 message 将会串联起来
+console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.meta 中。同名的属性，最新的会覆盖老的
+console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
+```
+
+当然，这 error、meta、message 都是可选的：
+
+```js
+var err = new Errors.Error();
+```
 
 ## API
 
