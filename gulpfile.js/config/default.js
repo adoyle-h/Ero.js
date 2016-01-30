@@ -28,7 +28,7 @@ var config = {
                     base: './',
                 },
                 dest: './release',
-                year: '2015-2016',
+                sinceYear: '2015',
                 author: 'ADoyle',  // default author for all files
                 license: 'Apache',  // default license for all files
                 matches: [{  // it could be empty array if you do not need specify files with other license
