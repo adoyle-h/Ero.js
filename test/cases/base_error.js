@@ -29,7 +29,7 @@ describe('#base_error', function() {
         err.meta.should.be.an.Object();
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -38,7 +38,7 @@ describe('#base_error', function() {
         err.name.should.equal('BaseError');
         err.message.should.equal('hello! this a BaseError');
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -50,7 +50,7 @@ describe('#base_error', function() {
         err.meta.should.equal(meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -63,7 +63,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual(error.meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -78,7 +78,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
-        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -93,7 +93,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal(message + ' && ' + _message);
         err.stack.should.be.a.String();
-        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -108,7 +108,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({a: 1, b: 2});
         err.message.should.equal('hello! this a BaseError && ' + _message);
         err.stack.should.be.a.String();
-        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -120,7 +120,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -132,20 +132,19 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
     it('new BaseError(undefined, undefined, message) should equal new BaseError(message)', function() {
-        var error;
-        var meta;
+        var error, meta;
         var message = 'this a BaseError';
         var err = new BaseError(error, meta, message);
         err.name.should.equal('BaseError');
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -158,7 +157,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String();
-        should.not.exist(err.stack.match(/==== Pre-Error-Stack ====/g));
+        should.not.exist(err.stack.match(/\==== Pre-Error-Stack ====/g));
         checkKeys(err);
     });
 
@@ -203,7 +202,7 @@ describe('#base_error', function() {
             thirdErr.message.should.equal('something is wrong && the second error && the first error');
             thirdErr.meta.should.deepEqual({a: 1, b: '2', c: [3], d: true});
             thirdErr.stack.should.be.a.String();
-            thirdErr.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(2);
+            thirdErr.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(2);
         });
     });
 });

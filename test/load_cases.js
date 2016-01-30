@@ -1,3 +1,6 @@
+/*
+* Define how to load test cases.
+*/
 'use strict';
 
 var util = require('lodash');
@@ -9,7 +12,9 @@ var folders = config.get('cases');
 
 function addTestCase(mocha, directory) {
     walk.sync(directory, function(filepath, stats) {
-        if (stats.isFile()) {
+        if (stats.isFile()
+            && (filepath.lastIndexOf('.js') === (filepath.length - 3))
+        ) {
             mocha.addFile(filepath);
         }
     });

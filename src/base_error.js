@@ -66,11 +66,9 @@ function BaseError() {
     var self = this;
     var args = Array.prototype.slice.call(arguments);
     var message = '';
-    var params;
     var meta = {};
-    var error;
-    var preArgs;
     var stackObj = {};
+    var params, error, preArgs, arg, errorMessage;
 
     var messageIndex = util.findIndex(args.slice(0, 3), util.isString);
 
@@ -82,7 +80,6 @@ function BaseError() {
         preArgs = args.slice(0, 2);
     }
 
-    var arg;
     while (preArgs.length !== 0) {
         arg = preArgs.pop();
         if (arg instanceof Error) {
@@ -103,8 +100,7 @@ function BaseError() {
 
     if (error) {
         meta = util.extend({}, error.meta, meta);
-
-        var errorMessage = error.message;
+        errorMessage = error.message;
         if (!util.isEmpty(errorMessage)) {
             if (message) {
                 message = message + this.MESSAGE_CONNECTOR + errorMessage;

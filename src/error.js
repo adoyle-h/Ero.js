@@ -60,12 +60,16 @@ exports.setMessageConnector = function(connector) {
  * @return {Function}  Error Class
  */
 exports.defineError = function(definition, name) {
-    if (!Errors.template) throw new Error('The error template should be defined firstly!');
-    if (util.isObject(definition) === false) throw new Error('definition should be an object! Current error name=' + name);
+    if (!Errors.template) {
+        throw new Error('The error template should be defined firstly!');
+    }
+    if (util.isObject(definition) === false) {
+        throw new Error('definition should be an object! Current error name=' + name);
+    }
 
-    var E = function() {
+    function E() {
         BaseError.apply(this, arguments);
-    };
+    }
     util.inherits(E, BaseError);
 
     util.each(Errors.template, function(opts, key) {
@@ -74,6 +78,7 @@ exports.defineError = function(definition, name) {
             E.prototype[key] = value;
         } else {
             if (opts.required === true) {
+                /* eslint-disable max-len */
                 throw new Error('Missing the key "' + key + '", which is required. Current error name=' + name);
             } else {
                 E.prototype[key] = opts.default;
@@ -126,6 +131,7 @@ exports.setTemplate = function(template) {
         } else if (util.isObject(params)) {
             t[key] = check(params, v.templateProp());
         } else {
+            /* eslint-disable max-len */
             throw new Error('The value of template item should be an object or a string. Actual key=' + key + ' and value=' + JSON.stringify(params));
         }
     });
