@@ -9,10 +9,28 @@
 
 一个提供了一些简单的函数的类库，用于构建你自己的自定义错误。
 
+## TOC
+
+<!-- MarkdownTOC -->
+
+- [安装（Installation）](#安装（installation）)
+- [快速上手（Quick Start）](#快速上手（quick-start）)
+- [错误模板（Error Template）](#错误模板（error-template）)
+- [错误定义（Error Definitions）](#错误定义（error-definitions）)
+- [错误类（Error Class）](#错误类（error-class）)
+- [API](#api)
+- [版本（Versioning）](#版本（versioning）)
+- [版权声明（Copyright and License）](#版权声明（copyright-and-license）)
+
+<!-- /MarkdownTOC -->
+
+
+<a name="安装（installation）"></a>
 ## 安装（Installation）
 
 `npm install --save ero`
 
+<a name="快速上手（quick-start）"></a>
 ## 快速上手（Quick Start）
 
 强烈推荐你二次封装 `ero` 库，以此来扩展出你自己的错误模块。
@@ -101,6 +119,7 @@ console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
 ```
 
+<a name="错误模板（error-template）"></a>
 ## 错误模板（Error Template）
 
 错误模板用于约束错误定义中的属性。  
@@ -109,6 +128,7 @@ console.log('logLevel: ', e.logLevel);
 
 错误模板中的 `message`，是为了强制让开发者解释每个错误属性的含义，别无它用。
 
+<a name="错误定义（error-definitions）"></a>
 ## 错误定义（Error Definitions）
 
 每一个错误定义(Error Definition)用于创建对应的错误类（Error Class）。
@@ -117,6 +137,7 @@ console.log('logLevel: ', e.logLevel);
 
 属性定义是一个由许多键值对组成的对象（Object），它将被赋值到对应错误类的原型链上，作为每个错误实例的默认值。
 
+<a name="错误类（error-class）"></a>
 ## 错误类（Error Class）
 你提供的每个错误定义（Error Definitions），将会生成对应的错误类。错误类都是继承自 [`BaseError`](http://adoyle.me/Ero.js/#!/api/BaseError) 这个基类。
 
@@ -157,10 +178,12 @@ console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
 var err = new Errors.Error();
 ```
 
+<a name="api"></a>
 ## API
 
 请看 http://adoyle.me/Ero.js/
 
+<a name="版本（versioning）"></a>
 ## 版本（Versioning）
 
 版本迭代遵循 SemVer 2.0.0 的规则。
@@ -169,6 +192,7 @@ var err = new Errors.Error();
 
 关于 SemVer 的更多信息，请访问 http://semver.org/。
 
+<a name="版权声明（copyright-and-license）"></a>
 ## 版权声明（Copyright and License）
 
 Copyright (c) 2015-2016 ADoyle. The project is licensed under the **Apache License Version 2.0**.

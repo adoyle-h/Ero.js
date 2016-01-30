@@ -13,10 +13,28 @@ An error library provides simple functions for building your own customized erro
 
 [简体中文](./doc/README.zh-Hans.md)
 
+## TOC
+
+<!-- MarkdownTOC -->
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Error Template](#error-template)
+- [Error Definitions](#error-definitions)
+- [Error Class](#error-class)
+- [API](#api)
+- [Versioning](#versioning)
+- [Copyright and License](#copyright-and-license)
+
+<!-- /MarkdownTOC -->
+
+
+<a name="installation"></a>
 ## Installation
 
 `npm install --save ero`
 
+<a name="quick-start"></a>
 ## Quick Start
 
 It is highly recommended that you should wrap the `ero` library to extend your own error module.
@@ -105,6 +123,7 @@ console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
 ```
 
+<a name="error-template"></a>
 ## Error Template
 
 The error template is used to constrain the properties of the error definition.
@@ -114,6 +133,7 @@ Furthermore, the template can also set default values for the properties of all 
 
 The `message` property of template do nothing besides force the developer to explain the meaning of each property of error definition.
 
+<a name="error-definitions"></a>
 ## Error Definitions
 
 Each error definition is used to create the corresponding error class.
@@ -123,6 +143,7 @@ Each error definition is defined by `<error name>: <properties definitions>`, wh
 `Properties definitions` is an object composed of many key/value pairs.
 It will be assigned to the prototype of corresponding error class, as the default value for each error instance.
 
+<a name="error-class"></a>
 ## Error Class
 Each error definitions provided will be used to generate corresponding error classes, which are inherited from the [`BaseError`](http://adoyle.me/Ero.js/#!/api/BaseError) base class.
 
@@ -163,10 +184,12 @@ Certainly, error, meta, message can be optional:
 var err = new Errors.Error();
 ```
 
+<a name="api"></a>
 ## API
 
 see http://adoyle.me/Ero.js/
 
+<a name="versioning"></a>
 ## Versioning
 
 The versioning follows the rules of SemVer 2.0.0.
@@ -175,6 +198,7 @@ The versioning follows the rules of SemVer 2.0.0.
 
 For more information on SemVer, please visit http://semver.org/.
 
+<a name="copyright-and-license"></a>
 ## Copyright and License
 
 Copyright (c) 2015-2016 ADoyle. The project is licensed under the **Apache License Version 2.0**.
