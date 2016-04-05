@@ -23,7 +23,7 @@ v.addValidators({
             is: false,
             then: v.required(),
             otherwise: v.optional(),
-        }).description('the default value for error instance when `definition.required` is `OPTIONAL`'),
+        }).description('the default value for error instance when `definition.required` is `OPTIONAL`'),  // eslint-disable-line max-len
     }),
 });
 
@@ -31,8 +31,9 @@ exports.check = function(value, schema) {
     var rst = v.validate(value, schema, {
         allowUnknown: true,
     });
+    var message;
     if (rst.error) {
-        var message = 'wrong parameters of function\nInput Value: ' + rst.error.annotate();
+        message = 'wrong parameters of function\nInput Value: ' + rst.error.annotate();
         throw new Error(message);
     }
     return rst.value;

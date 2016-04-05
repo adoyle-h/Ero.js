@@ -45,7 +45,10 @@ function getBaseErrorStackFunc(error, stackObj) {
  *   - meta: {Object} The metadata for error.
  *   - message: {String} The error message.
  *   - [stack]: {String} The error stack. It is existed when `captureStackTrace` is `true`.
- *   - captureStackTrace: {Boolean} Whether to capture the stack trace. Default to `true`;
+ *   - captureStackTrace: {Boolean} Whether to capture the stack trace. Default to `true`.
+ *   - name: {String} The name of error class.
+ *   - ERROR_STACK_SEPARATOR: {String} The separator between multi error stacks.
+ *   - MESSAGE_CONNECTOR: {String} The connector between multi error messages.
  *
  * The `meta` is prior to `error.meta`, when their properties have same names.
  *
@@ -57,6 +60,7 @@ function getBaseErrorStackFunc(error, stackObj) {
  *     new BaseError([error][, meta][, message[, params1, ... paramsN]])
  *
  * @constructor
+ * @extends  Error
  * @param  {Error}  [error=null]  An instance of Error
  * @param  {Object}  [meta={}]  A metadata for error
  * @param  {String}  [message='']  A normal string or a string template with `%` placeholders
@@ -66,11 +70,9 @@ function BaseError() {
     var self = this;
     var args = Array.prototype.slice.call(arguments);
     var message = '';
-    var params;
     var meta = {};
-    var error;
-    var preArgs;
     var stackObj = {};
+    var params, error, preArgs, arg, errorMessage;
 
     var messageIndex = util.findIndex(args.slice(0, 3), util.isString);
 
@@ -82,7 +84,6 @@ function BaseError() {
         preArgs = args.slice(0, 2);
     }
 
-    var arg;
     while (preArgs.length !== 0) {
         arg = preArgs.pop();
         if (arg instanceof Error) {
@@ -103,8 +104,7 @@ function BaseError() {
 
     if (error) {
         meta = util.extend({}, error.meta, meta);
-
-        var errorMessage = error.message;
+        errorMessage = error.message;
         if (!util.isEmpty(errorMessage)) {
             if (message) {
                 message = message + this.MESSAGE_CONNECTOR + errorMessage;

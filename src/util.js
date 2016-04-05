@@ -11,4 +11,11 @@ util.mixin(util.pick(nodeUtil, [
 
 util.mixin(util.pick(require('sprintf-js'), ['sprintf', 'vsprintf']));
 
+util.mixin({
+    staticMethod: function(dest, name, func) {
+        dest.prototype[name] = func;
+        dest[name] = func;
+    },
+});
+
 module.exports = util;

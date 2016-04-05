@@ -1,3 +1,13 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/adoyle-h/Ero.js/compare/v0.1.0...v0.2.0) (2016-04-05)
+
+
+### Features
+
+* refactoring Ero to be a class, no longer be singleton ([7c25daf](https://github.com/adoyle-h/Ero.js/commit/7c25daf))
+
+
+
 <a name="0.1.0"></a>
 # [0.1.0](https://github.com/adoyle-h/Ero.js/compare/v0.0.2...v0.1.0) (2016-01-11)
 

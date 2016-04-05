@@ -1,18 +1,35 @@
+cache:
+  apt: true
+  directories:
+    - node_modules
+
 git:
   depth: 2
+
 branches:
   only:
     - master
     - develop
+
 language: node_js
+
 node_js:
+  - "5"
+  - "5.1"
+  - "4"
+  - "4.2"
   - "4.1"
   - "4.0"
   - "0.12"
   - "0.11"
+
+before_install:
+  - t=3.3 && v=`npm -v` && x=`printf "$v\n$t" | sort -V | head -n 1` && [ $x != $t ] && npm install -g npm || echo "no need to upgrade npm."
+
 install:
   - npm install
   - npm install -g gulp
+
 script:
   - gulp lint
   - gulp test

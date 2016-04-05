@@ -12,12 +12,11 @@
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
     gulp.task('tasks', function() {
         var tasks = Object.keys(gulp.tasks);
-        var task;
         var map = {'Basics': []};
-        var category;
-        for (var i = tasks.length - 1; i >= 0; i--) {
+        var task, category, i, arr;
+        for (i = tasks.length - 1; i >= 0; i--) {
             task = tasks[i];
-            var arr = task.split(':');
+            arr = task.split(':');
             if (arr.length === 1) {
                 category = map.Basics;
             } else {

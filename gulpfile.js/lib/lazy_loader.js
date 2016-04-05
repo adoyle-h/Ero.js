@@ -28,8 +28,9 @@ var LL = {
     },
     setMulti: function(params) {
         var propertys = Object.keys(params);
-        for (var i = propertys.length - 1; i >= 0; i--) {
-            var property = propertys[i];
+        var property, i;
+        for (i = propertys.length - 1; i >= 0; i--) {
+            property = propertys[i];
             this.set(property, params[property]);
         }
     },

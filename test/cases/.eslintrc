@@ -5,4 +5,7 @@
     "globals": {
         "TEST_ROOT": false,
     },
+    "rules": {
+        "max-len": 1
+    }
 }
