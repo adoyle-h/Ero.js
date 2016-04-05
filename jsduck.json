@@ -4,7 +4,7 @@
     "--no-source": true,
     "--": [
         "src/base_error.js",
-        "src/error.js"
+        "src/ero.js"
     ],
     "--output": "./doc/API"
 }
