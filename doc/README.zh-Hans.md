@@ -138,9 +138,11 @@ ero 空间有以下主要成员：
 
 - [template](#错误模板-error-template)
 - [BaseError](#错误基类-baseerror)
-- [Errors](#错误类-error-class)
+- [Errors](#错误类-error-class): 所有自定义的错误类都放在这里
 
 每个 ero 空间都是独立的，互不影响。
+
+Ero 还提供一些工具函数，如 `Ero.isCustomError`，具体请看 [API 文档][API - Ero]。
 
 <a name="错误模板-error-template"></a>
 ### 错误模板 (Error Template)
@@ -213,7 +215,7 @@ console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.met
 console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
 ```
 
-当然，这 error、meta、message 都是可选的：
+当然，error、meta、message 都是可选参数：
 
 ```js
 var err = new Errors.Error();
@@ -268,6 +270,7 @@ See the [NOTICE][] file distributed with this work for additional information re
 [BaseError]: #错误基类-baseerror
 [API]: http://adoyle.me/Ero.js/
 [API - BaseError]: http://adoyle.me/Ero.js/#!/api/BaseError
+[API - Ero]: http://adoyle.me/Ero.js/#!/api/Ero
 
 <!-- links -->
 
