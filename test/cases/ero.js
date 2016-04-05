@@ -186,7 +186,7 @@ describe('#Ero', function() {
 });
 
 
-describe('#Ero - util', function () {
+describe('#Ero - util', function() {
     var Ero = require('../../src/ero');
     var Fakers = require('../fixtures/fakers');
 

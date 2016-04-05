@@ -38,7 +38,7 @@
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
     "gulp-conventional-changelog": "^0.7.0",
-    "gulp-eslint": "^2.0.0-rc-3",
+    "gulp-eslint": "github:adoyle-h/gulp-eslint#a2.7.0",
     "gulp-filter": "^3.0.1",
     "minimist": "^1.2.0",
     "mocha": "^2.3.4",
