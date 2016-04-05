@@ -45,7 +45,10 @@ function getBaseErrorStackFunc(error, stackObj) {
  *   - meta: {Object} The metadata for error.
  *   - message: {String} The error message.
  *   - [stack]: {String} The error stack. It is existed when `captureStackTrace` is `true`.
- *   - captureStackTrace: {Boolean} Whether to capture the stack trace. Default to `true`;
+ *   - captureStackTrace: {Boolean} Whether to capture the stack trace. Default to `true`.
+ *   - name: {String} The name of error class.
+ *   - ERROR_STACK_SEPARATOR: {String} The separator between multi error stacks.
+ *   - MESSAGE_CONNECTOR: {String} The connector between multi error messages.
  *
  * The `meta` is prior to `error.meta`, when their properties have same names.
  *
@@ -57,6 +60,7 @@ function getBaseErrorStackFunc(error, stackObj) {
  *     new BaseError([error][, meta][, message[, params1, ... paramsN]])
  *
  * @constructor
+ * @extends  Error
  * @param  {Error}  [error=null]  An instance of Error
  * @param  {Object}  [meta={}]  A metadata for error
  * @param  {String}  [message='']  A normal string or a string template with `%` placeholders

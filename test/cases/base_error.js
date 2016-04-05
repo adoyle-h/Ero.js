@@ -1,22 +1,8 @@
 'use strict';
 
 describe('#base_error', function() {
-    var Errors = require('../../src/error');
     var BaseError = require('../../src/base_error');
-    var Fakers = require('../fixtures/fakers');
-    var Helper = require('../fixtures/helper');
     var should = require('should');
-
-    before(function() {
-        Helper.reset(Errors);
-    });
-
-    before(function() {
-        Errors.init({
-            template: Fakers.errorTemplate,
-            definitions: Fakers.definitions,
-        });
-    });
 
     function checkKeys(err) {
         err.should.have.keys(['meta', 'message', 'stack']);
@@ -196,9 +182,9 @@ describe('#base_error', function() {
         it('chain three errors', function() {
             var firstErr = new Error('the first error');
             var secondMeta = {a: 1, b: 3};
-            var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
+            var secondErr = new BaseError(firstErr, secondMeta, 'the second error');
             var thirdMeta = {b: '2', c: [3], d: true};
-            var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+            var thirdErr = new BaseError(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
             thirdErr.message.should.equal('something is wrong && the second error && the first error');
             thirdErr.meta.should.deepEqual({a: 1, b: '2', c: [3], d: true});
             thirdErr.stack.should.be.a.String();
