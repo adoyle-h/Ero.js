@@ -21,7 +21,7 @@
     - [错误定义 \(Error Definitions\)](#错误定义-error-definitions)
     - [错误基类 \(BaseError\)](#错误基类-baseerror)
     - [错误类 \(Error Class\)](#错误类-error-class)
-- [特性](#特性)
+- [特性 \(Feature\)](#特性-feature)
     - [创建不捕获堆栈信息的错误实例](#创建不捕获堆栈信息的错误实例)
     - [多 Ero 实例](#多-ero-实例)
 - [API](#api)
@@ -92,7 +92,6 @@ var ero = new Ero({
     definitions: definitions,
 });
 
-// 将 Errors 导出
 module.exports = ero;
 ```
 
@@ -221,8 +220,8 @@ console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
 var err = new Errors.Error();
 ```
 
-<a name="特性"></a>
-## 特性
+<a name="特性-feature"></a>
+## 特性 (Feature)
 
 <a name="创建不捕获堆栈信息的错误实例"></a>
 ### 创建不捕获堆栈信息的错误实例

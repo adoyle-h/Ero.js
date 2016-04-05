@@ -19,9 +19,15 @@ An error library provides simple functions for building your own customized erro
 
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Error Template](#error-template)
-- [Error Definitions](#error-definitions)
-- [Error Class](#error-class)
+- [Basic Concepts](#basic-concepts)
+    - [Ero Class](#ero-class)
+    - [Error Template](#error-template)
+    - [Error Definitions](#error-definitions)
+    - [BaseError](#baseerror)
+    - [Error Class](#error-class)
+- [Feature](#feature)
+    - [Creating error instance without capturing stack trace](#creating-error-instance-without-capturing-stack-trace)
+    - [Multi Ero Instances](#multi-ero-instances)
 - [API](#api)
 - [Versioning](#versioning)
 - [Copyright and License](#copyright-and-license)
@@ -84,20 +90,20 @@ var definitions = {
     },
 };
 
-// initialize the ero library
-Errors.init({
+// create an ero instance
+var ero = new Ero({
     template: errorTemplate,
     definitions: definitions,
 });
 
-// export the Errors
-module.exports = Errors;
+module.exports = ero;
 ```
 
 In another file, require your error module:
 
 ```js
-var Errors = require('./error');
+vvar ero = require('./error');
+var Errors = ero.Errors;
 
 // use the defined errors
 // assume that there is a meta obejct
@@ -123,8 +129,26 @@ console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
 ```
 
+<a name="basic-concepts"></a>
+## Basic Concepts
+
+<a name="ero-class"></a>
+### Ero Class
+
+`new Ero()` create an ero instance, which is a space storing error classes, and providing some utility functions.
+
+ero contains these members as below:
+
+- [template](#error-template)
+- [BaseError](#baseerror)
+- [Errors](#error-class): All customized errors are put here.
+
+Each ero space are independent.
+
+Ero provides some utility functions, such as `Ero.isCustomError`. Please refer to [API document][API - Ero].
+
 <a name="error-template"></a>
-## Error Template
+### Error Template
 
 The error template is used to constrain the properties of the error definition.
 
@@ -134,18 +158,35 @@ Furthermore, the template can also set default values for the properties of all 
 The `message` property of template do nothing besides force the developer to explain the meaning of each property of error definition.
 
 <a name="error-definitions"></a>
-## Error Definitions
+### Error Definitions
 
 Each error definition is used to create the corresponding error class.
 
-Each error definition is defined by `<error name>: <properties definitions>`, which `<error name>` should be unique.
+Each error definition is defined by a key/value pair `<error name>: <properties definitions>`, in which `<error name>` should be unique.
 
 `Properties definitions` is an object composed of many key/value pairs.
 It will be assigned to the prototype of corresponding error class, as the default value for each error instance.
 
+<a name="baseerror"></a>
+### BaseError
+
+The Ero.js provides a `BaseError` class as the base class of all customized error classes.
+
+`BaseError` class has properties as below:
+
+- meta: {Object} The metadata for error.
+- message: {String} The error message.
+- [stack]: {String} The error stack. It is existed when `captureStackTrace` is `true`.
+- captureStackTrace: {Boolean} Whether to capture the stack trace. Default to `true`.
+- name: {String} The name of error class.
+- ERROR_STACK_SEPARATOR: {String} The separator between multi error stacks.
+- MESSAGE_CONNECTOR: {String} The connector between multi error messages.
+
+Refer to [`API document - BaseError`][API - BaseError] for more details.
+
 <a name="error-class"></a>
-## Error Class
-Each error definitions provided will be used to generate corresponding error classes, which are inherited from the [`BaseError`](http://adoyle.me/Ero.js/#!/api/BaseError) base class.
+### Error Class
+Each error definitions provided will be used to generate corresponding error classes, which are inherited from the [`BaseError`][BaseError] base class.
 
 `BaseError` has a full featured constructor that is convenient for adding more useful information to error instance when you create it.
 
@@ -178,16 +219,38 @@ console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to er
 console.log(thirdErr.stack);  // These three error stacks will be together in a series.
 ```
 
-Certainly, error, meta, message can be optional:
+Certainly, error, meta, message are optional parameters:
 
 ```js
 var err = new Errors.Error();
 ```
 
+<a name="feature"></a>
+## Feature
+
+<a name="creating-error-instance-without-capturing-stack-trace"></a>
+### Creating error instance without capturing stack trace
+
+`error.stack` is not required. It means that calling `var error = new Errors.SubError();` could not capture the error stack.
+There is a scenario, developers need to create a error instance, while do not care about its error stack.
+
+(It would not capture stack error, only when `SubError.captureStackTrace` is `false`. Refer to [BaseError][] for More informations)
+
+<a name="multi-ero-instances"></a>
+### Multi Ero Instances
+
+In most cases, like building a web server application, you only need one ero instance for customizing your errors.
+
+For framework libraries, you could create multi ero instances, for providing the error classes for framework layer and user layer.
+
+For class libraries, I think it is unnecessary to use this project and the native error class is enough.
+
+**Attentions**, the `template`, `BaseError` and `Errors` are independent between different ero instances. Thus `ero.isCustomError` could only recognize the errors which created based on the `Errors` in an ero.
+
 <a name="api"></a>
 ## API
 
-see http://adoyle.me/Ero.js/
+The specifications of API, and details not mentioned in README, would be referenced at [API document][API].
 
 <a name="versioning"></a>
 ## Versioning
@@ -212,6 +275,10 @@ See the [NOTICE][] file distributed with this work for additional information re
 
 [LICENSE]: ./LICENSE
 [NOTICE]: ./NOTICE
+[BaseError]: #baseerror
+[API]: http://adoyle.me/Ero.js/
+[API - BaseError]: http://adoyle.me/Ero.js/#!/api/BaseError
+[API - Ero]: http://adoyle.me/Ero.js/#!/api/Ero
 
 
 <!-- links -->
