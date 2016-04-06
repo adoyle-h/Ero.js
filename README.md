@@ -51,8 +51,19 @@ Edit a file. e.g. `error.js`:
 // error.js
 var Errors = require('ero');
 
-// define an error template
+// define an error template for standardizing the properties of the error definition
 var errorTemplate = {
+    /**
+     * Next line means that each error definition **MUST** contain the `code` property.
+     * The 'The error code' is a description for this property.
+     */
+    code: 'The error code',
+    /**
+     * Next line means that each error definition **MAY** contain the `captureStackTrace` property.
+     * `message` is a description for this property.
+     * `required` indicates whether this property should be required.
+     * `default` provide the default vaule of this property when `required` is `false`.
+     */
     code: 'The error code',
     captureStackTrace: {
         message: 'Whether capture error stack or not',

@@ -47,9 +47,16 @@
 // error.js
 var Ero = require('ero');
 
-// 定义一个错误模板
+// 定义一个错误模板，用来规范错误类定义 (error definition) 的属性
 var errorTemplate = {
+    // 下一行代表着每个错误类定义**必须**包含 code 字段，'The error code' 用来描述这个字段的作用
     code: 'The error code',
+    /**
+     * 下一行代表着每个错误类定义**可以**包含 captureStackTrace 字段，
+     * message 字段用来描述这个字段的作用，
+     * required 表示这个字段是否必须定义，
+     * 当 required 为 false 时，需要提供 default 表示 captureStackTrace 的默认值。
+     */
     captureStackTrace: {
         message: 'Whether capture error stack or not',
         required: false,
