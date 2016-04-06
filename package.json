@@ -30,14 +30,14 @@
   },
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
+    "ad-conventional-changelog": "^0.1.0",
     "config-sp": "^0.1.1",
-    "cz-conventional-changelog": "^1.1.5",
     "eslint": "2.7.0",
     "eslint-config-adoyle-style": "0.3.2",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
-    "gulp-conventional-changelog": "^0.7.0",
+    "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "github:adoyle-h/gulp-eslint#a2.7.0",
     "gulp-filter": "^3.0.1",
     "minimist": "^1.2.0",
@@ -47,7 +47,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/ad-conventional-changelog"
     }
   }
 }
