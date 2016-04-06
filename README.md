@@ -28,6 +28,10 @@ An error library provides simple functions for building your own customized erro
 - [Feature](#feature)
     - [Creating error instance without capturing stack trace](#creating-error-instance-without-capturing-stack-trace)
     - [Multi Ero Instances](#multi-ero-instances)
+    - [Supporting sprintf-like syntax](#supporting-sprintf-like-syntax)
+    - [Additional metadata](#additional-metadata)
+    - [More flexible parameters transfer, when create an instance](#more-flexible-parameters-transfer-when-create-an-instance)
+    - [Nested error informations](#nested-error-informations)
 - [API](#api)
 - [Versioning](#versioning)
 - [Copyright and License](#copyright-and-license)
@@ -168,6 +172,8 @@ Furthermore, the template can also set default values for the properties of all 
 
 The `message` property of template do nothing besides force the developer to explain the meaning of each property of error definition.
 
+The template could be referred by `ero.template`.
+
 <a name="error-definitions"></a>
 ### Error Definitions
 
@@ -193,6 +199,8 @@ The Ero.js provides a `BaseError` class as the base class of all customized erro
 - ERROR_STACK_SEPARATOR: {String} The separator between multi error stacks.
 - MESSAGE_CONNECTOR: {String} The connector between multi error messages.
 
+The `BaseError` could be referred by `ero.BaseError`.
+
 Refer to [`API document - BaseError`][API - BaseError] for more details.
 
 <a name="error-class"></a>
@@ -201,40 +209,7 @@ Each error definitions provided will be used to generate corresponding error cla
 
 `BaseError` has a full featured constructor that is convenient for adding more useful information to error instance when you create it.
 
-Assume that there is a `Errors.Error` class. Then you use it like that:
-
-```js
-// The message can be sprintf-like format string, which is implemented by [alexei/sprintf.js](https://github.com/alexei/sprintf.js)
-var err = new Errors.Error('%s is %s', 'something', 'wrong');
-```
-
-To add some meta data:
-
-```js
-var meta = {a: 1, b: '2', c: [3], d: true};
-var err = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
-console.log(err.meta);  // The meta will be added to err.meta
-```
-
-To be combined with an error
-
-```js
-var firstErr = new Error('the first error');
-var secondMeta = {a: 1, b: 3};
-var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
-var thirdMeta = {b: '2', c: [3], d: true};
-// The err and meta are order-uncorrelated. Just make sure they are appeared before message.
-var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
-console.log(thirdErr.message);  // These three error messages will be together in a series.
-console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to err.meta. The last is prior to the old, when they have same name of key.
-console.log(thirdErr.stack);  // These three error stacks will be together in a series.
-```
-
-Certainly, error, meta, message are optional parameters:
-
-```js
-var err = new Errors.Error();
-```
+All customized error classes are put in `ero.Errors`, which already includes `BaseError`.
 
 <a name="feature"></a>
 ## Feature
@@ -242,10 +217,14 @@ var err = new Errors.Error();
 <a name="creating-error-instance-without-capturing-stack-trace"></a>
 ### Creating error instance without capturing stack trace
 
-`error.stack` is not required. It means that calling `var error = new Errors.SubError();` could not capture the error stack.
-There is a scenario, developers need to create a error instance, while do not care about its error stack.
+`error.stack` is not required. It means that calling `var error = new Errors.SubError();` could not capture the error stack. (It would not capture stack error, only when `SubError.captureStackTrace` is `false`. Refer to [BaseError][] for More informations)
 
-(It would not capture stack error, only when `SubError.captureStackTrace` is `false`. Refer to [BaseError][] for More informations)
+Because there are some scenarios that developers need to create a error instance, while do not care about its error stack.
+
+Besides, when `captureStackTrace` is `true` it does not mean that the stack traces will be collected at the time of creating an error instance.
+
+As same as the mechanism of v8 engine, Ero.js will collect the stack traces only when `error.stack` is called. The [nested error](#nested-error-informations) procedure is in a similar way.
+
 
 <a name="multi-ero-instances"></a>
 ### Multi Ero Instances
@@ -256,7 +235,74 @@ For framework libraries, you could create multi ero instances, for providing the
 
 For class libraries, I think it is unnecessary to use this project and the native error class is enough.
 
-**Attentions**, the `template`, `BaseError` and `Errors` are independent between different ero instances. Thus `ero.isCustomError` could only recognize the errors which created based on the `Errors` in an ero.
+**Attentions**: the `template`, `BaseError` and `Errors` are independent between different ero instances. Thus `ero.isCustomError` could only recognize the errors which created based on the `Errors` in an ero.
+
+<a name="supporting-sprintf-like-syntax"></a>
+### Supporting sprintf-like syntax
+
+The error message can be sprintf-like format string, which is implemented by [alexei/sprintf.js](https://github.com/alexei/sprintf.js) actually.
+
+```js
+var err = new Errors.BaseError('%s is %s', 'something', 'wrong');
+console.log(err.message); // => 'something is wrong'
+```
+
+<a name="additional-metadata"></a>
+### Additional metadata
+
+Metadata is used to provide some additional informations besides message and stack, such as runtime content.
+
+You may see the `key=value` format in an error message. Once the metadata is available, you should just put your data into `error.meta` as json. It will save much time for formatting and querying.
+
+<a name="more-flexible-parameters-transfer-when-create-an-instance"></a>
+### More flexible parameters transfer, when create an instance
+
+To add some meta data:
+
+```js
+var meta = {a: 1, b: '2', c: [3], d: true};
+var err = new Errors.BaseError(meta, '%s is %s', 'something', 'wrong');
+console.log(err.meta);  // The meta will be added to err.meta
+```
+
+To be combined with an error
+
+```js
+var firstErr = new Error('the first error');
+var secondMeta = {a: 1, b: 3};
+var secondErr = new Errors.BaseError(firstErr, secondMeta, 'the second error');
+var thirdMeta = {b: '2', c: [3], d: true};
+var thirdErr = new Errors.BaseError(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // These three error messages will be together in a series.
+console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to err.meta. The last is prior to the old, when they have same name of key.
+console.log(thirdErr.stack);  // These three error stacks will be together in a series.
+```
+
+**The error and meta are order-uncorrelated. Just make sure they are appeared before message.**
+
+Certainly, error, meta, message are optional parameters:
+
+```js
+var err = new Errors.BaseError();
+```
+
+<a name="nested-error-informations"></a>
+### Nested error informations
+
+```js
+var firstErr = new Error('the first error');
+var secondErr = new Errors.BaseError(firstErr, 'the second error');
+var thirdErr = new Errors.BaseError(secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // These three error messages will be together in a series.
+console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to err.meta. The last is prior to the old, when they have same name of key.
+console.log(thirdErr.stack);  // These three error stacks will be together in a series.
+```
+
+- `stack` default to using `\n==== Pre-Error-Stack ====\n` to separate multi `error.stack`.
+- `message` default to using ` && ` to connect multi `error.message`.
+- `meta` will merge multi `error.meta`.
+
+You can set the stack separator and the message connector for all errors in each ero instance.
 
 <a name="api"></a>
 ## API

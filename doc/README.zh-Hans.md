@@ -239,7 +239,7 @@ console.log(err.message); // => 'something is wrong'
 元数据是为了提供除了 message，stack 以外的附加信息，比如运行时的上下文。
 
 你也许看到过有人将键值对放入以 `key=value` 的形式写入 message 里。
-一旦有了元数据，就无需将键值对写入 message 里了，省去了 format 和提取数据的步骤。直接以 json 的形式附加在 error 实例上。
+一旦有了元数据，就无需将键值对写入 message 里了，省去了 format 和提取数据的步骤。直接以 json 的形式附加在 `error.meta` 上。
 
 <a name="创建错误实例时，更灵活地传参"></a>
 ### 创建错误实例时，更灵活地传参
@@ -270,7 +270,7 @@ console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
 当然，error、meta、message 都是可选参数：
 
 ```js
-var err = new Errors.Error();
+var err = new Errors.BaseError();
 ```
 
 <a name="嵌套错误信息"></a>
