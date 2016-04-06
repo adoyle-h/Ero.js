@@ -24,6 +24,10 @@
 - [特性 \(Feature\)](#特性-feature)
     - [创建不捕获堆栈信息的错误实例](#创建不捕获堆栈信息的错误实例)
     - [多 Ero 实例](#多-ero-实例)
+    - [支持 sprintf 语法](#支持-sprintf-语法)
+    - [附加元数据 \(additional metadata\)](#附加元数据-additional-metadata)
+    - [创建错误实例时，更灵活地传参](#创建错误实例时，更灵活地传参)
+    - [嵌套错误信息](#嵌套错误信息)
 - [API](#api)
 - [版本 \(Versioning\)](#版本-versioning)
 - [版权声明 \(Copyright and License\)](#版权声明-copyright-and-license)
@@ -159,6 +163,8 @@ Ero 还提供一些工具函数，如 `Ero.isCustomError`，具体请看 [API �
 
 错误模板中的 `message`，是为了强制让开发者解释每个错误属性的含义，别无它用。
 
+可以通过 `ero.template` 得到标准化后的错误模板。
+
 <a name="错误定义-error-definitions"></a>
 ### 错误定义 (Error Definitions)
 
@@ -184,6 +190,8 @@ Ero 还提供一些工具函数，如 `Ero.isCustomError`，具体请看 [API �
 - ERROR_STACK_SEPARATOR: {String} 多个错误堆栈之间的分隔符
 - MESSAGE_CONNECTOR: {String} 多个错误信息之间的连接符
 
+BaseError 可以通过 `ero.BaseError` 得到。
+
 更多信息请看 [`API 文档 - BaseError`][API - BaseError]
 
 <a name="错误类-error-class"></a>
@@ -192,40 +200,7 @@ Ero 还提供一些工具函数，如 `Ero.isCustomError`，具体请看 [API �
 
 `BaseError` 提供了功能丰富的构造函数，方便你在创建错误实例时，附加更多有用的信息。
 
-假设已生成 `Errors.Error` 这个子类，你可以这么使用它：
-
-```js
-// 错误信息可以使用 sprintf 类似的语法，实际上它是通过 [alexei/sprintf.js](https://github.com/alexei/sprintf.js) 实现的
-var err = new Errors.Error('%s is %s', 'something', 'wrong');
-```
-
-你可以添加一些元数据：
-
-```js
-var meta = {a: 1, b: '2', c: [3], d: true};
-var err = new Errors.Error(meta, '%s is %s', 'something', 'wrong');
-console.log(err.meta);  // meta 将会存储在 err.meta 中
-```
-
-你可以结合上一个错误：
-
-```js
-var firstErr = new Error('the first error');
-var secondMeta = {a: 1, b: 3};
-var secondErr = new Errors.Error(firstErr, secondMeta, 'the second error');
-var thirdMeta = {b: '2', c: [3], d: true};
-// err 和 meta 是顺序无关的，只要保证在 message 之前即可
-var thirdErr = new Errors.Error(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
-console.log(thirdErr.message);  // 三个错误的 message 将会串联起来
-console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.meta 中。同名的属性，最新的会覆盖老的
-console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
-```
-
-当然，error、meta、message 都是可选参数：
-
-```js
-var err = new Errors.Error();
-```
+错误类会放在 `ero.Errors` 中，默认包含 `ero.Errors.BaseError`。
 
 <a name="特性-feature"></a>
 ## 特性 (Feature)
@@ -236,6 +211,9 @@ var err = new Errors.Error();
 `error.stack` 并不是必有属性。意味着 `var error = new Errors.SubError();` 时，可以不捕获错误堆栈。因为存在这样的场景，开发者需要创建错误实例，但不关心错误堆栈。
 （仅当 `SubError` 的 `captureStackTrace` 属性的值为 `false` 时才不会捕获堆栈。具体实现机制请去看 [BaseError][]）
 
+另外，当 `captureStackTrace` 为 `true` 时，并不代表着创建 error 实例时就会去收集错误堆栈。  
+根据 v8 引擎的特性，只有使用 error.stack 的时候才会去收集，这在 Ero.js 这个库里也是同样处理的，同时[嵌套错误](#嵌套错误信息)时也是同样的处理。
+
 <a name="多-ero-实例"></a>
 ### 多 Ero 实例
 
@@ -244,6 +222,74 @@ var err = new Errors.Error();
 对于类库级别的库，个人觉得你不需要使用本项目，用 nodejs 自带的 Error 足矣。
 
 **注意**，不同 Ero 实例中的 template、BaseError、Errors 都是互相独立的，因此 `ero.isCustomError` 只能判断当前 Ero 实例下的错误，**而不能判断其他 Ero 实例下定义的错误**。
+
+<a name="支持-sprintf-语法"></a>
+### 支持 sprintf 语法
+
+错误信息可以使用 sprintf 类似的语法，实际上它是通过 [alexei/sprintf.js](https://github.com/alexei/sprintf.js) 实现的
+
+```js
+var err = new Errors.BaseError('%s is %s', 'something', 'wrong');
+console.log(err.message); // => 'something is wrong'
+```
+
+<a name="附加元数据-additional-metadata"></a>
+### 附加元数据 (additional metadata)
+
+元数据是为了提供除了 message，stack 以外的附加信息，比如运行时的上下文。
+
+你也许看到过有人将键值对放入以 `key=value` 的形式写入 message 里。
+一旦有了元数据，就无需将键值对写入 message 里了，省去了 format 和提取数据的步骤。直接以 json 的形式附加在 error 实例上。
+
+<a name="创建错误实例时，更灵活地传参"></a>
+### 创建错误实例时，更灵活地传参
+
+你可以添加一些元数据：
+
+```js
+var meta = {a: 1, b: '2', c: [3], d: true};
+var err = new Errors.BaseError(meta, '%s is %s', 'something', 'wrong');
+console.log(err.meta);  // meta 将会存储在 err.meta 中
+```
+
+你可以结合上一个错误：
+
+```js
+var firstErr = new Error('the first error');
+var secondMeta = {a: 1, b: 3};
+var secondErr = new Errors.BaseError(firstErr, secondMeta, 'the second error');
+var thirdMeta = {b: '2', c: [3], d: true};
+var thirdErr = new Errors.BaseError(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // 三个错误的 message 将会串联起来
+console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.meta 中。同名的属性，最新的会覆盖老的
+console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
+```
+
+**err 和 meta 是顺序无关的，只要保证在 message 之前即可。**
+
+当然，error、meta、message 都是可选参数：
+
+```js
+var err = new Errors.Error();
+```
+
+<a name="嵌套错误信息"></a>
+### 嵌套错误信息
+
+```js
+var firstErr = new Error('the first error');
+var secondErr = new Errors.BaseError(firstErr, 'the second error');
+var thirdErr = new Errors.BaseError(secondErr, '%s is %s', 'something', 'wrong');
+console.log(thirdErr.message);  // 三个错误的 message 将会串联起来
+console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.meta 中。同名的属性，最新的会覆盖老的
+console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
+```
+
+- stack 默认会使用 `\n==== Pre-Error-Stack ====\n` 连接多个 `error.stack`。
+- message 默认会使用 ` && ` 来连接多个 `error.message`。
+- meta，会合并多个 `error.meta`
+
+你可以自定义 stack 和 message 的连接符。
 
 <a name="api"></a>
 ## API
