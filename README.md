@@ -68,7 +68,6 @@ var errorTemplate = {
      * `required` indicates whether this property should be required.
      * `default` provide the default vaule of this property when `required` is `false`.
      */
-    code: 'The error code',
     captureStackTrace: {
         message: 'Whether capture error stack or not',
         required: false,
