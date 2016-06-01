@@ -116,7 +116,7 @@ module.exports = ero;
 In another file, require your error module:
 
 ```js
-vvar ero = require('./error');
+var ero = require('./error');
 var Errors = ero.Errors;
 
 // use the defined errors
