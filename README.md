@@ -53,7 +53,7 @@ Edit a file. e.g. `error.js`:
 
 ```js
 // error.js
-var Errors = require('ero');
+var Ero = require('ero');
 
 // define an error template for standardizing the properties of the error definition
 var errorTemplate = {
