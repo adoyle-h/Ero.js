@@ -8,33 +8,52 @@ var util = require('./util');
 
 /**
  * @private
- */
-function getBaseErrorStack() {
-    var stackObj = this;
-    if (!stackObj.cache) {
-        stackObj.cache = stackObj.stack;
-    }
-    return stackObj.cache;
-}
-
-/**
- * @private
  *
  * @method  getBaseErrorStackFunc
- * @param   {Object}  error
- * @param   {String}  error.stack
  * @param   {Object}  stackObj
- * @param   {String}  [stackObj.stack]
+ * @param   {String}  [stackObj.stack='']
+ * @param   {Object}  [preError]
+ * @param   {String}  [preError.stack='']
  * @return  {Function}
  */
-function getBaseErrorStackFunc(error, stackObj) {
+function getBaseErrorStackFunc(stackObj, preError) {
     var cache;
     return function() {
+        var baseError = this;
         if (!cache) {
-            cache = (stackObj.stack || '') + this.ERROR_STACK_SEPARATOR + error.stack;
+            if (preError) {
+                cache = util.get(stackObj, 'stack', '') +
+                    baseError.ERROR_STACK_SEPARATOR +
+                    util.get(preError, 'stack', '');
+            } else {
+                cache = util.get(stackObj, 'stack', '');
+            }
         }
         return cache;
     };
+}
+
+
+/**
+ * Assign stack property to BaseError instance.
+ *
+ * @private
+ *
+ * @side_effect baseError
+ * @method  assignStack
+ * @param   {BaseError}  baseError
+ * @param   {Object}  stackObj
+ * @param   {String}  [stackObj.stack='']
+ * @param   {Object}  [preError]
+ * @param   {String}  [preError.stack='']
+ * @return  {undefined}
+ */
+function assignStack(baseError, stackObj, preError) {
+    Object.defineProperty(baseError, 'stack', {
+        configurable: true,
+        enumerable: true,
+        get: getBaseErrorStackFunc(stackObj, preError),
+    });
 }
 
 /**
@@ -93,13 +112,10 @@ function BaseError() {
         }
     }
 
+
     if (self.captureStackTrace) {
         Error.captureStackTrace(stackObj, self.constructor);
-        Object.defineProperty(self, 'stack', {
-            configurable: true,
-            enumerable: true,
-            get: getBaseErrorStack.bind(stackObj),
-        });
+        assignStack(self, stackObj);
     }
 
     if (error) {
@@ -114,13 +130,14 @@ function BaseError() {
         }
 
         if (error.stack) {
-            Object.defineProperty(self, 'stack', {
-                configurable: true,
-                enumerable: true,
-                get: getBaseErrorStackFunc(error, stackObj),
-            });
+            assignStack(self, stackObj, error);
         }
     }
+
+    // For stack takes with error message
+    // see https://github.com/nodejs/node/issues/5675#issuecomment-203966051
+    stackObj.name = this.name;
+    stackObj.message = message;
 
     self.meta = meta;
     self.message = message;
