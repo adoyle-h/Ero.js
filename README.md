@@ -53,7 +53,7 @@ Edit a file. e.g. `error.js`:
 
 ```js
 // error.js
-var Errors = require('ero');
+var Ero = require('ero');
 
 // define an error template for standardizing the properties of the error definition
 var errorTemplate = {
@@ -68,7 +68,6 @@ var errorTemplate = {
      * `required` indicates whether this property should be required.
      * `default` provide the default vaule of this property when `required` is `false`.
      */
-    code: 'The error code',
     captureStackTrace: {
         message: 'Whether capture error stack or not',
         required: false,
@@ -117,7 +116,7 @@ module.exports = ero;
 In another file, require your error module:
 
 ```js
-vvar ero = require('./error');
+var ero = require('./error');
 var Errors = ero.Errors;
 
 // use the defined errors
