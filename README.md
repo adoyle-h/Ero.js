@@ -117,7 +117,11 @@ In another file, require your error module:
 
 ```js
 var ero = require('./error');
+// Get your customized error classes via ero.Errors. All definitions defined above will be implemented in it.
 var Errors = ero.Errors;
+// You could look into the BaseError. Attention! The BaseErrors from different Ero instances are not equal.
+// You will never use the BaseError directly in general scenarios.
+var BaseError = ero.BaseError;
 
 // use the defined errors
 // assume that there is a meta obejct
@@ -141,6 +145,10 @@ console.log('code: ', e.code);
 console.log('captureStackTrace: ', e.captureStackTrace);
 console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
+
+// You could judge whether the error instance belongs to the ero instance.
+ero.isError(e);  // => true
+ero.isError(new Error());  // => false
 ```
 
 <a name="basic-concepts"></a>
@@ -297,11 +305,14 @@ console.log(thirdErr.meta);  // The secondMeta and thirdMeta will be added to er
 console.log(thirdErr.stack);  // These three error stacks will be together in a series.
 ```
 
-- `stack` default to using `\n==== Pre-Error-Stack ====\n` to separate multi `error.stack`.
-- `message` default to using ` && ` to connect multi `error.message`.
+- `stack` default to using `'\n==== Pre-Error-Stack ====\n'` to separate multi `error.stack`.
+- `message` default to using `' && '` to connect multi `error.message`.
 - `meta` will merge multi `error.meta`.
 
 You can set the stack separator and the message connector for all errors in each ero instance.
+
+For example, you could invoke `ero.setErrorStackSeparator('\nFrom previous event:\n')` to get the promise-like stack output.  
+Plus, invoke `ero.setMessageConnector(', ')` to replace the default message connector for multi error messages.
 
 <a name="api"></a>
 ## API
