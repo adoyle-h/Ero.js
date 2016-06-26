@@ -33,7 +33,7 @@
     "ad-conventional-changelog": "^0.1.0",
     "config-sp": "^0.1.1",
     "eslint": "2.13.1",
-    "eslint-config-adoyle-style": "0.4.1",
+    "eslint-config-adoyle-style": "0.4.2",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
