@@ -174,6 +174,21 @@ describe('#base_error', function() {
         checkKeys(err);
     });
 
+    it('new BaseError(preError, message) when preError is a string', function() {
+        var error = 'We cannot determine previous error must be an Error instance';
+        var message = 'this a BaseError';
+        var err = new BaseError(error, message);
+        var targetMessage = error;
+
+        err.name.should.equal('BaseError');
+        err.meta.should.deepEqual({});
+        err.message.should.equal(targetMessage);  // So do not pass a string as error!
+        err.stack.should.be.a.String()
+            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+        err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
+        checkKeys(err);
+    });
+
     describe('## test message', function() {
         it('no message', function() {
             var err = new BaseError();
@@ -206,13 +221,18 @@ describe('#base_error', function() {
             checkKeys(err);
         });
 
-        it('chain three errors', function() {
+        it('test message and stack when chain three errors', function() {
             var firstErr = new Error('the first error');
             var secondMeta = {a: 1, b: 3};
             var secondErr = new BaseError(firstErr, secondMeta, 'the second error');
             var thirdMeta = {b: '2', c: [3], d: true};
             var thirdErr = new BaseError(thirdMeta, secondErr, '%s is %s', 'something', 'wrong');
             var targetMessage = 'something is wrong && the second error && the first error';
+            var secondTargetMessage = 'the second error && the first error';
+
+            secondErr.message.should.equal(secondTargetMessage);
+            secondErr.stack.should.be.a.String();
+            secondErr.stack.indexOf('BaseError: ' + secondTargetMessage).should.equal(0);
 
             thirdErr.message.should.equal(targetMessage);
             thirdErr.meta.should.deepEqual({a: 1, b: '2', c: [3], d: true});
