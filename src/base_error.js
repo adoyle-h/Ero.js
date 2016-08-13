@@ -17,19 +17,18 @@ var util = require('./util');
  * @return  {Function}
  */
 function getBaseErrorStackFunc(stackObj, preError) {
-    var cache;
     return function() {
         var baseError = this;
-        if (!cache) {
+        if (!stackObj.stackCache) {
             if (preError) {
-                cache = util.get(stackObj, 'stack', '') +
+                stackObj.stackCache = util.get(stackObj, 'stack', '') +
                     baseError.ERROR_STACK_SEPARATOR +
                     util.get(preError, 'stack', '');
             } else {
-                cache = util.get(stackObj, 'stack', '');
+                stackObj.stackCache = util.get(stackObj, 'stack', '');
             }
         }
-        return cache;
+        return stackObj.stackCache;
     };
 }
 
@@ -53,6 +52,7 @@ function assignStack(baseError, stackObj, preError) {
         configurable: true,
         enumerable: true,
         get: getBaseErrorStackFunc(stackObj, preError),
+        set: function(stack) {stackObj.stackCache = stack;},
     });
 }
 
@@ -90,7 +90,7 @@ function BaseError() {
     var args = Array.prototype.slice.call(arguments);
     var message = '';
     var meta = {};
-    var stackObj = {};
+    var stackObj = {stackCache: null};
     var params, error, preArgs, arg, errorMessage;
 
     var messageIndex = util.findIndex(args.slice(0, 3), util.isString);

@@ -252,4 +252,24 @@ describe('#base_error', function() {
             secondErr.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         });
     });
+
+    describe('## stack', function() {
+        it('error.stack can be reassigned', function() {
+            var message = 'this a BaseError';
+            var err = new BaseError(message);
+            var stack = 'reassigned stack';
+            err.stack = stack;
+            err.stack.should.equal(stack);
+        });
+
+        it('error.stack can be reassigned after stack is readed', function() {
+            var message = 'this a BaseError';
+            var err = new BaseError(message);
+            var stack = 'reassigned stack';
+            var justForReadStack = err.stack;
+            justForReadStack.should.be.a.String();
+            err.stack = stack;
+            err.stack.should.equal(stack);
+        });
+    });
 });
