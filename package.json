@@ -1,6 +1,6 @@
 {
   "name": "ero",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "An error library provides simple functions for building your own customized errors.",
   "main": "index.js",
   "keywords": [
@@ -11,7 +11,7 @@
     "test": "node test"
   },
   "engines": {
-    "node": ">=0.11.0"
+    "node": ">=4.0.0"
   },
   "author": "ADoyle <adoyle.h@gmail.com>",
   "license": "Apache-2.0",
@@ -25,15 +25,14 @@
   },
   "dependencies": {
     "joi": "^6.10.1",
-    "lodash": "^3.10.1",
+    "lodash": "^4.15.0",
     "sprintf-js": "^1.0.3"
   },
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
-    "ad-conventional-changelog": "^0.1.0",
     "config-sp": "^0.1.1",
-    "eslint": "2.7.0",
-    "eslint-config-adoyle-style": "0.3.2",
+    "eslint": "2.13.1",
+    "eslint-config-adoyle-style": "0.4.2",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
@@ -45,10 +44,5 @@
     "run-sequence": "^1.2.1",
     "should": "^7.1.1",
     "walkdir": "0.0.11"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/ad-conventional-changelog"
-    }
   }
 }

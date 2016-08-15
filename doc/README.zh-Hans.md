@@ -110,7 +110,11 @@ module.exports = ero;
 
 ```js
 var ero = require('./error');
+// 你能通过 ero.Errors 引用上面定义的 definitions 实现的错误类
 var Errors = ero.Errors;
+// 你能查看本 ero 实例的 BaseError，注意每个 Ero 实例的 BaseError 实际上是不同的，
+// 不过大多数情况下你不会直接使用 BaseError
+var BaseError = ero.BaseError;
 
 // 使用你自定义的错误类
 // 假设有一个元数据(meta)
@@ -134,6 +138,10 @@ console.log('code: ', e.code);
 console.log('captureStackTrace: ', e.captureStackTrace);
 console.log('statusCode: ', e.statusCode);
 console.log('logLevel: ', e.logLevel);
+
+// 你可以判断当前错误实例是否属于此 ero 空间，是否继承自 ero.BaseError
+ero.isError(e);  // => true
+ero.isError(new Error());  // => false
 ```
 
 <a name="基本概念-basic-concepts"></a>
@@ -285,11 +293,15 @@ console.log(thirdErr.meta);  // secondMeta 和 thirdMeta 将会存储在 err.met
 console.log(thirdErr.stack);  // 三个错误的堆栈信息将会串联起来
 ```
 
-- stack 默认会使用 `\n==== Pre-Error-Stack ====\n` 连接多个 `error.stack`。
-- message 默认会使用 ` && ` 来连接多个 `error.message`。
+- stack 默认会使用 `'\n==== Pre-Error-Stack ====\n'` 连接多个 `error.stack`。
+- message 默认会使用 `' && '` 来连接多个 `error.message`。
 - meta，会合并多个 `error.meta`
 
 你可以自定义 stack 和 message 的连接符。
+
+例如调用 `ero.setErrorStackSeparator('\nFrom previous event:\n')`，输出 Promise 风格的堆栈格式。  
+调用 `ero.setMessageConnector(', ')`，来代替默认的 `' && '` 连接多个错误信息。
+
 
 <a name="api"></a>
 ## API
