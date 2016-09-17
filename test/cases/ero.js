@@ -1,5 +1,3 @@
-'use strict';
-
 describe('#Ero', function() {
     var should = require('should');
     var util = require('../../src/util');
@@ -17,6 +15,11 @@ describe('#Ero', function() {
                 message: 'Whether capture error stack or not',
                 required: false,
                 default: true,
+            },
+            message: {
+                message: 'The default error message',
+                required: false,
+                default: 'The is a default message',
             },
             statusCode: {
                 message: 'The status code of HTTP response',
@@ -125,6 +128,7 @@ describe('#Ero', function() {
             e.statusCode.should.equal(500);
             e.message.should.equal('test');
             e.stack.should.be.a.String();
+            e.logLevel.should.equal('error');
         });
     });
 
@@ -181,6 +185,71 @@ describe('#Ero', function() {
 
             checkEroTemplate(ero);
             checkEroBaseError(ero);
+        });
+    });
+
+    describe('check error instance properties', function() {
+        var ero;
+
+        before(function() {
+            ero = new Ero({
+                template: Fakers.errorTemplate,
+                definitions: Fakers.definitions,
+            });
+        });
+
+        it('check message without any default message', function() {
+            var e = new Ero({
+                template: {},
+                definitions: Fakers.definitions,
+            });
+
+            var RejectError = e.Errors.RejectError;
+            var err = new RejectError();
+
+            err.message.should.equal('');
+        });
+
+        it('check default message of template', function() {
+            var RejectError = ero.Errors.RejectError;
+            var err = new RejectError();
+
+            err.message.should.equal('The is a default message');
+        });
+
+        it('check default message of template in nested error', function() {
+            var RejectError = ero.Errors.RejectError;
+            var err = new RejectError(new Error('hell'));
+
+            err.message.should.equal('The is a default message && hell');
+        });
+
+        it('check default message of template with nested error and message', function() {
+            var RejectError = ero.Errors.RejectError;
+            var err = new RejectError(new Error('hell'), 'world');
+
+            err.message.should.equal('world && hell');
+        });
+
+        it('check default message of definition', function() {
+            var NotFoundError = ero.Errors.NotFoundError;
+            var err = new NotFoundError();
+
+            err.message.should.equal('Not Found');
+        });
+
+        it('check default message of definition in nested error', function() {
+            var NotFoundError = ero.Errors.NotFoundError;
+            var err = new NotFoundError(new Error('hell'));
+
+            err.message.should.equal('Not Found && hell');
+        });
+
+        it('check default message of definition with nested error and message', function() {
+            var NotFoundError = ero.Errors.NotFoundError;
+            var err = new NotFoundError(new Error('hell'), 'world');
+
+            err.message.should.equal('world && hell');
         });
     });
 });

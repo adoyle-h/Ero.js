@@ -1,5 +1,3 @@
-'use strict';
-
 if (!Error.captureStackTrace) throw new Error('Error.captureStackTrace does not exist!');
 
 var util = require('./util');

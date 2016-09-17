@@ -1,7 +1,6 @@
 /*
 * Define how to load test cases.
 */
-'use strict';
 
 var util = require('lodash');
 var walk = require('walkdir');

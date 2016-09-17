@@ -1,5 +1,3 @@
-'use strict';
-
 var lodash = require('lodash');
 var nodeUtil = require('util');
 

@@ -1,5 +1,3 @@
-'use strict';
-
 // side-effect
 require('should');
 

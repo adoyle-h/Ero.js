@@ -1,5 +1,3 @@
-'use strict';
-
 var mochaRunner = require('./mocha_runner');
 
 var mocha = mochaRunner.init();

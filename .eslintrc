@@ -1,4 +1,4 @@
 {
     "root": true,
-    "extends": "adoyle-style"
+    "extends": "adoyle-style/node"
 }

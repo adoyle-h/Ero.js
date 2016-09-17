@@ -9,13 +9,11 @@
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
     gulp.task('lint', function() {
         var eslint = LL.eslint;
-        var cached = LL.cached;
 
         var opts = config.get('tasks.lint.eslintOptions');
         if (args.fix || args.f) opts.fix = true;
 
         return gulp.src(config.get('tasks.lint.src'))
-            .pipe(cached('lint'))
             .pipe(eslint(opts))
             .pipe(eslint.format())
             .pipe(eslint.failAfterError());

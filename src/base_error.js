@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @class BaseError
  */
@@ -82,13 +80,13 @@ function assignStack(baseError, stackObj, preError) {
  * @extends  Error
  * @param  {Error}  [error=null]  An instance of Error
  * @param  {Object}  [meta={}]  A metadata for error
- * @param  {String}  [message='']  A normal string or a string template with `%` placeholders
+ * @param  {String}  [message]  A normal string or a string template with `%` placeholders
  * @param  {*...}  [paramsN]  Some parameters to replace the `%` placeholders in message.
  */
 function BaseError() {
     var self = this;
     var args = Array.prototype.slice.call(arguments);
-    var message = '';
+    var message = self.message;
     var meta = {};
     var stackObj = {stackCache: null};
     var params, error, preArgs, arg, errorMessage;
