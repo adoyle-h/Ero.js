@@ -1,5 +1,3 @@
-'use strict';
-
 describe('#base_error', function() {
     var BaseError = require('../../src/base_error');
 
@@ -14,7 +12,7 @@ describe('#base_error', function() {
         err.meta.should.be.an.Object();
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + message).should.equal(0);
         checkKeys(err);
     });
@@ -25,7 +23,7 @@ describe('#base_error', function() {
         err.name.should.equal('BaseError');
         err.message.should.equal(targetMessage);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -40,7 +38,7 @@ describe('#base_error', function() {
         err.meta.should.equal(meta);
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -57,7 +55,7 @@ describe('#base_error', function() {
         err.message.should.equal(message);
         err.stack.should.be.a.String();
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
-        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -74,7 +72,7 @@ describe('#base_error', function() {
         err.message.should.equal(targetMessage);
         err.stack.should.be.a.String();
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
-        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -91,7 +89,7 @@ describe('#base_error', function() {
         err.message.should.equal(targetMessage);
         err.stack.should.be.a.String();
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
-        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -109,7 +107,7 @@ describe('#base_error', function() {
         err.message.should.equal(targetMessage);
         err.stack.should.be.a.String();
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
-        err.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(1);
+        err.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(1);
         checkKeys(err);
     });
 
@@ -123,7 +121,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -138,7 +136,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -153,7 +151,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -169,7 +167,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(message);
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -184,7 +182,7 @@ describe('#base_error', function() {
         err.meta.should.deepEqual({});
         err.message.should.equal(targetMessage);  // So do not pass a string as error!
         err.stack.should.be.a.String()
-            .and.not.containEql(/\==== Pre-Error-Stack ====/g);
+            .and.not.containEql(/==== Pre-Error-Stack ====/g);
         err.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
         checkKeys(err);
     });
@@ -238,7 +236,7 @@ describe('#base_error', function() {
             thirdErr.meta.should.deepEqual({a: 1, b: '2', c: [3], d: true});
             thirdErr.stack.should.be.a.String();
             thirdErr.stack.indexOf('BaseError: ' + targetMessage).should.equal(0);
-            thirdErr.stack.match(/\==== Pre-Error-Stack ====/g).length.should.equal(2);
+            thirdErr.stack.match(/==== Pre-Error-Stack ====/g).length.should.equal(2);
         });
 
         it('show pre error message if current error without any message', function() {

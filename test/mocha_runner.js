@@ -1,5 +1,3 @@
-'use strict';
-
 var Mocha = require('mocha');
 var util = require('lodash');
 

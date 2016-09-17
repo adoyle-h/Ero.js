@@ -1,5 +1,3 @@
-'use strict';
-
 describe('#Ero', function() {
     var should = require('should');
     var util = require('../../src/util');

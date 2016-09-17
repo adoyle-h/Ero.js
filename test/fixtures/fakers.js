@@ -1,5 +1,3 @@
-'use strict';
-
 exports.errorTemplate = {
     code: 'The error code',
     captureStackTrace: {

@@ -1,5 +1,3 @@
-'use strict';
-
 var v = require('joi');
 var util = require('lodash');
 
