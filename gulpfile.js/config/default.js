@@ -45,24 +45,6 @@ var config = {
                 dest: 'master',  // branch name or commit hash
             },
         },
-
-        lint: {
-            src: [
-                '**/*.js',
-                '!node_modules/**',
-                '!release/**',
-                '!doc/**',
-                '!gh-pages/**',
-            ],
-            // see https://github.com/adametry/gulp-eslint#eslintoptions
-            eslintOptions: {
-                quiet: true,
-            },
-        },
-
-        test: {
-            mochaRunner: '../../test/index',
-        },
     },
 };
 

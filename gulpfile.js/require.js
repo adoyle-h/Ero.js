@@ -13,11 +13,11 @@ module.exports = {
 
     // third-party libraries prefixed with 'gulp-'
     bump: 'gulp-bump',
-    eslint: 'gulp-eslint',
     cached: 'gulp-cached',
     license: 'a-gulp-license',
     filter: 'gulp-filter',
     changelog: 'gulp-conventional-changelog',
+    shell: 'gulp-shell',
 
     // data
     packageJSON: './package.json',
