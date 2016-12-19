@@ -6,6 +6,8 @@ var check = require('./validator').check;
 
 /**
  * @private
+ * @param {BaseError} origin
+ * @return {BaseError}  cloned BaseError
  */
 function cloneBaseError(origin) {
     // eslint-disable-next-line no-shadow
@@ -183,7 +185,7 @@ Ero.prototype.getError = Ero.prototype.getErrorClass;
  * If the error is an instance of the native Error, return `false`.
  *
  * @method isInstanceOfBaseError
- * @param  {*}  error
+ * @param  {*}  err
  * @return {Boolean}
  * @static
  */

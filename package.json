@@ -8,6 +8,11 @@
     "customized"
   ],
   "scripts": {
+    "lint": "npm-run-all lint-*",
+    "lint-src": "eslint --quiet index.js src",
+    "lint-gulp": "eslint --quiet gulpfile.js",
+    "lint-test": "eslint --quiet test",
+    "fix-lint": "eslint --quiet --fix index.js src",
     "test": "node test",
     "test-cov": "nyc npm run test"
   },
@@ -32,8 +37,8 @@
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
     "config-sp": "^0.1.1",
-    "eslint": "^3.5.0",
-    "eslint-config-adoyle-style": "^2.0.1",
+    "eslint": "^3.12.2",
+    "eslint-config-adoyle-style": "2.2.1",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-cached": "^1.1.0",
@@ -42,6 +47,7 @@
     "gulp-filter": "^3.0.1",
     "minimist": "^1.2.0",
     "mocha": "^3.2.0",
+    "npm-run-all": "^3.1.2",
     "nyc": "^10.0.0",
     "run-sequence": "^1.2.1",
     "should": "^11.1.2",

@@ -76,12 +76,12 @@ function assignStack(baseError, stackObj, preError) {
  *     new BaseError([meta][, error], message[, params1, ... paramsN])
  *     new BaseError([error][, meta][, message[, params1, ... paramsN]])
  *
- * @constructor
+ * @class BaseError
  * @extends  Error
  * @param  {Error}  [error=null]  An instance of Error
  * @param  {Object}  [meta={}]  A metadata for error
  * @param  {String}  [message]  A normal string or a string template with `%` placeholders
- * @param  {*...}  [paramsN]  Some parameters to replace the `%` placeholders in message.
+ * @param  {*}  [paramsN...]  Some parameters to replace the `%` placeholders in message.
  */
 function BaseError() {
     var self = this;
