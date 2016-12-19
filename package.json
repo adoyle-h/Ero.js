@@ -8,7 +8,8 @@
     "customized"
   ],
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "test-cov": "nyc npm run test"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -41,6 +42,7 @@
     "gulp-filter": "^3.0.1",
     "minimist": "^1.2.0",
     "mocha": "^2.3.4",
+    "nyc": "^10.0.0",
     "run-sequence": "^1.2.1",
     "should": "^7.1.1",
     "walkdir": "0.0.11"
