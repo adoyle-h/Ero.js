@@ -118,7 +118,7 @@ describe('#Ero', function() {
             E.should.be.a.Function();
             E.should.equal(Errors.Error);
 
-            Errors.should.have.keys(['BaseError', 'Error']);
+            Errors.should.have.keys('BaseError', 'Error');
 
             var e = new E('test');
             e.should.be.an.Error();
@@ -177,7 +177,7 @@ describe('#Ero', function() {
                 template: Fakers.errorTemplate,
             });
 
-            ero.Errors.should.be.an.Object().and.have.keys(['BaseError']);
+            ero.Errors.should.be.an.Object().and.have.keys('BaseError');
 
             util.each(ero.Errors, function(_Error) {
                 _Error.should.be.a.Function();

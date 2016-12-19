@@ -2,7 +2,7 @@ describe('#base_error', function() {
     var BaseError = require('../../src/base_error');
 
     function checkKeys(err) {
-        err.should.have.keys(['meta', 'message', 'stack']);
+        err.should.have.keys('meta', 'message', 'stack');
     }
 
     it('new BaseError(message)', function() {
