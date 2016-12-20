@@ -28,16 +28,23 @@ function cloneBaseError(origin) {
  * @constructor
  *
  * @param  {Object}  params
- * @param  {Object}  params.template  A template for all error sub-classes
+ * @param  {Object}  params.specifications  A template for all error sub-classes
  * @param  {Object[]}  [params.definitions]  The definitions of error sub-classes
  */
 function Ero(params) {
     var ero = this;
     /**
-     * The parsed error template.
+     * The parsed error specifications.
      * @property {Object}
      */
-    ero.template = null;
+    ero.specifications = null;
+    Object.defineProperty(ero, 'template', {
+        get: function() {
+            // eslint-disable-next-line no-console
+            console.warn('The ero.template is deprecated. Use ero.specifications instead.');
+            return ero.specifications;
+        },
+    });
     /**
      * The BaseError class.
      * @property {BaseError}
@@ -49,7 +56,11 @@ function Ero(params) {
      */
     ero.Errors = {BaseError: ero.BaseError};
 
-    ero.setTemplate(params.template);
+    if (params.template) {
+        ero.setTemplate(params.template);
+    } else {
+        ero.setTemplate(params.specifications);
+    }
 
     util.each(params.definitions, function(definition, name) {
         ero.defineErrorClass(definition, name);
@@ -136,17 +147,17 @@ Ero.prototype.defineError = Ero.prototype.defineErrorClass;
 
 /**
  * @method setTemplate
- * @param  {Object} template
+ * @param  {Object} specifications
  * @return {undefined}
  */
-Ero.prototype.setTemplate = function(template) {
+Ero.prototype.setSpecifications = function(specifications) {
     var ero = this;
-    if (util.isObject(template) === false) {
+    if (util.isObject(specifications) === false) {
         throw new Error('template should be an object!');
     }
 
     var t = {};
-    util.each(template, function(params, key) {
+    util.each(specifications, function(params, key) {
         if (util.isString(params)) {
             t[key] = {
                 message: params,
@@ -156,11 +167,12 @@ Ero.prototype.setTemplate = function(template) {
             t[key] = check(params, v.templateProp());
         } else {
             // eslint-disable-next-line max-len
-            throw new Error('The value of template item should be an object or a string. Actual key=' + key + ' and value=' + JSON.stringify(params));
+            throw new Error('The spec "' + key + '" should be an object or a string. Actual value=' + JSON.stringify(params));
         }
     });
-    ero.template = t;
+    ero.specifications = t;
 };
+Ero.prototype.setTemplate = util.deprecate(Ero.prototype.setSpecifications, '');
 
 /**
  * get error class
