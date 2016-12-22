@@ -180,6 +180,17 @@ Ero.prototype.getErrorClass = function(name) {
 Ero.prototype.getError = Ero.prototype.getErrorClass;
 
 /**
+ * @method  query
+ * @param   {String}  name  The name of error class
+ * @return  {Object|null}  Error properties
+ */
+Ero.prototype.query = function query(name) {
+    var E = this.getError(name);
+    if (!E) return null;
+    return util.omit(E.prototype);
+};
+
+/**
  * To determine whether it is your custom error.
  *
  * If the error is an instance of the native Error, return `false`.

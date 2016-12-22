@@ -252,6 +252,35 @@ describe('#Ero', function() {
             err.message.should.equal('world && hell');
         });
     });
+
+    describe('query', function() {
+        var ero;
+        before(function() {
+            ero = new Ero({
+                template: Fakers.errorTemplate,
+                definitions: Fakers.definitions,
+            });
+        });
+
+        it('query by name', function() {
+            var error = ero.query('Error');
+            error.should.deepEqual({
+                'ERROR_STACK_SEPARATOR': '\n==== Pre-Error-Stack ====\n',
+                'MESSAGE_CONNECTOR': ' && ',
+                'captureStackTrace': true,
+                'code': '001',
+                'logLevel': 'error',
+                'message': 'The is a default message',
+                'name': 'Error',
+                'statusCode': 500,
+            });
+        });
+
+        it('query not found', function() {
+            var error = ero.query('WTF');
+            should.equal(error, null);
+        });
+    });
 });
 
 
