@@ -31,7 +31,7 @@
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
     "config-sp": "^0.1.1",
-    "eslint": "^3.5.0",
+    "eslint": "^6.6.0",
     "eslint-config-adoyle-style": "^2.0.1",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
